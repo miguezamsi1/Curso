@@ -1,0 +1,799 @@
+{% load static %}
+{% load cropping %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ basic.titulo }}</title>
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' href="{% static 'wp-includes/css/dashicons.min5b31.css' %}" type='text/css' media='all'/>
+    <link rel='stylesheet' href="{% static 'wp-includes/css/extra.min.css' %}" type='text/css' media='all'/>
+    <link rel='stylesheet' href="{% static 'wp-includes/css/site.min.css' %}" type='text/css' media='all'/>
+    <link rel='stylesheet' href="{% static 'wp-includes/css/menu-image.css' %}" type='text/css' media='all'/>
+    <link rel='stylesheet' href="{% static 'wp-includes/css/style.css' %}" type='text/css' media='all'/>
+    <link rel='stylesheet'
+          href='http://fonts.googleapis.com/css?family=Megrim%7CRaleway%7COpen+Sans:400,400italic,700,700italic'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
+          type='text/css' media='all'/>
+    <!-- <script type='text/javascript'>
+      /* <![CDATA[ */
+      var promoslider_options = {
+        "version": "3.3.4"
+      };
+      /* ]]> */
+    </script> -->
+    <style type='text/css'>
+        .download-info .download-button {
+            background-image: path({% static 'downloadbutton.gif' %});
+        }
+
+        .download-info .more-button {
+            background-image: path({% static 'morebutton.gif' %});
+        }
+    </style>
+
+    <style>
+        .container {
+            max-width: 1190px;
+        }
+    </style>
+    <style type="text/css">
+        .recentcomments a {
+            display: inline !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+    </style>
+    <style id="pum-styles" type="text/css" media="all">
+        /* Popup Theme 1068: Framed Border */
+        .popmake-overlay.theme-1068,
+        .popmake-overlay.theme-framed-border {
+            background-color: rgba(255, 255, 255, 1.00)
+        }
+
+        .popmake.theme-1068,
+        .popmake.theme-framed-border {
+            padding: 18px;
+            border-radius: 0px;
+            border: 1px none #000000;
+            box-shadow: 1px 1px 3px 0px rgba(2, 2, 2, 0.23);
+            background-color: rgba(249, 249, 249, 1.00)
+        }
+
+        .popmake.theme-1068 .popmake-title,
+        .popmake.theme-framed-border .popmake-title {
+            color: #000000;
+            text-align: left;
+            text-shadow: 0px 0px 0px rgba(2, 2, 2, 0.23);
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 32px;
+            font-style: normal;
+            line-height: 36px
+        }
+
+        .popmake.theme-1068 .popmake-content,
+        .popmake.theme-framed-border .popmake-content {
+            color: #8c8c8c;
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: normal
+        }
+
+        .popmake.theme-1068 > .popmake-close,
+        .popmake.theme-framed-border > .popmake-close {
+            height: auto;
+            width: auto;
+            left: auto;
+            right: 0px;
+            bottom: auto;
+            top: 0px;
+            padding: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 12px;
+            font-style: normal;
+            line-height: 14px;
+            border: 1px none #ffffff;
+            border-radius: 0px;
+            box-shadow: 0px 0px 0px 0px rgba(2, 2, 2, 0.23);
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.23);
+            background-color: rgba(0, 183, 205, 1.00)
+        }
+
+        /* Popup Theme 1067: Cutting Edge */
+        .popmake-overlay.theme-1067,
+        .popmake-overlay.theme-cutting-edge {
+            background-color: rgba(255, 255, 255, 1.00)
+        }
+
+        .popmake.theme-1067,
+        .popmake.theme-cutting-edge {
+            padding: 18px;
+            border-radius: 0px;
+            border: 1px none #000000;
+            box-shadow: 1px 1px 3px 0px rgba(2, 2, 2, 0.23);
+            background-color: rgba(249, 249, 249, 1.00)
+        }
+
+        .popmake.theme-1067 .popmake-title,
+        .popmake.theme-cutting-edge .popmake-title {
+            color: #000000;
+            text-align: left;
+            text-shadow: 0px 0px 0px rgba(2, 2, 2, 0.23);
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 32px;
+            font-style: normal;
+            line-height: 36px
+        }
+
+        .popmake.theme-1067 .popmake-content,
+        .popmake.theme-cutting-edge .popmake-content {
+            color: #8c8c8c;
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: normal
+        }
+
+        .popmake.theme-1067 > .popmake-close,
+        .popmake.theme-cutting-edge > .popmake-close {
+            height: auto;
+            width: auto;
+            left: auto;
+            right: 0px;
+            bottom: auto;
+            top: 0px;
+            padding: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 12px;
+            font-style: normal;
+            line-height: 14px;
+            border: 1px none #ffffff;
+            border-radius: 0px;
+            box-shadow: 0px 0px 0px 0px rgba(2, 2, 2, 0.23);
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.23);
+            background-color: rgba(0, 183, 205, 1.00)
+        }
+
+        /* Popup Theme 1066: Hello Box */
+        .popmake-overlay.theme-1066,
+        .popmake-overlay.theme-hello-box {
+            background-color: rgba(255, 255, 255, 1.00)
+        }
+
+        .popmake.theme-1066,
+        .popmake.theme-hello-box {
+            padding: 18px;
+            border-radius: 0px;
+            border: 1px none #000000;
+            box-shadow: 1px 1px 3px 0px rgba(2, 2, 2, 0.23);
+            background-color: rgba(249, 249, 249, 1.00)
+        }
+
+        .popmake.theme-1066 .popmake-title,
+        .popmake.theme-hello-box .popmake-title {
+            color: #000000;
+            text-align: left;
+            text-shadow: 0px 0px 0px rgba(2, 2, 2, 0.23);
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 32px;
+            font-style: normal;
+            line-height: 36px
+        }
+
+        .popmake.theme-1066 .popmake-content,
+        .popmake.theme-hello-box .popmake-content {
+            color: #8c8c8c;
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: normal
+        }
+
+        .popmake.theme-1066 > .popmake-close,
+        .popmake.theme-hello-box > .popmake-close {
+            height: auto;
+            width: auto;
+            left: auto;
+            right: 0px;
+            bottom: auto;
+            top: 0px;
+            padding: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 12px;
+            font-style: normal;
+            line-height: 14px;
+            border: 1px none #ffffff;
+            border-radius: 0px;
+            box-shadow: 0px 0px 0px 0px rgba(2, 2, 2, 0.23);
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.23);
+            background-color: rgba(0, 183, 205, 1.00)
+        }
+
+        /* Popup Theme 1065: Enterprise Blue */
+        .popmake-overlay.theme-1065,
+        .popmake-overlay.theme-enterprise-blue {
+            background-color: rgba(255, 255, 255, 1.00)
+        }
+
+        .popmake.theme-1065,
+        .popmake.theme-enterprise-blue {
+            padding: 18px;
+            border-radius: 0px;
+            border: 1px none #000000;
+            box-shadow: 1px 1px 3px 0px rgba(2, 2, 2, 0.23);
+            background-color: rgba(249, 249, 249, 1.00)
+        }
+
+        .popmake.theme-1065 .popmake-title,
+        .popmake.theme-enterprise-blue .popmake-title {
+            color: #000000;
+            text-align: left;
+            text-shadow: 0px 0px 0px rgba(2, 2, 2, 0.23);
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 32px;
+            font-style: normal;
+            line-height: 36px
+        }
+
+        .popmake.theme-1065 .popmake-content,
+        .popmake.theme-enterprise-blue .popmake-content {
+            color: #8c8c8c;
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: normal
+        }
+
+        .popmake.theme-1065 > .popmake-close,
+        .popmake.theme-enterprise-blue > .popmake-close {
+            height: auto;
+            width: auto;
+            left: auto;
+            right: 0px;
+            bottom: auto;
+            top: 0px;
+            padding: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 12px;
+            font-style: normal;
+            line-height: 14px;
+            border: 1px none #ffffff;
+            border-radius: 0px;
+            box-shadow: 0px 0px 0px 0px rgba(2, 2, 2, 0.23);
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.23);
+            background-color: rgba(0, 183, 205, 1.00)
+        }
+
+        /* Popup Theme 1064: Light Box */
+        .popmake-overlay.theme-1064,
+        .popmake-overlay.theme-lightbox {
+            background-color: rgba(255, 255, 255, 1.00)
+        }
+
+        .popmake.theme-1064,
+        .popmake.theme-lightbox {
+            padding: 18px;
+            border-radius: 0px;
+            border: 1px none #000000;
+            box-shadow: 1px 1px 3px 0px rgba(2, 2, 2, 0.23);
+            background-color: rgba(249, 249, 249, 1.00)
+        }
+
+        .popmake.theme-1064 .popmake-title,
+        .popmake.theme-lightbox .popmake-title {
+            color: #000000;
+            text-align: left;
+            text-shadow: 0px 0px 0px rgba(2, 2, 2, 0.23);
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 32px;
+            font-style: normal;
+            line-height: 36px
+        }
+
+        .popmake.theme-1064 .popmake-content,
+        .popmake.theme-lightbox .popmake-content {
+            color: #8c8c8c;
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: normal
+        }
+
+        .popmake.theme-1064 > .popmake-close,
+        .popmake.theme-lightbox > .popmake-close {
+            height: auto;
+            width: auto;
+            left: auto;
+            right: 0px;
+            bottom: auto;
+            top: 0px;
+            padding: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 12px;
+            font-style: normal;
+            line-height: 14px;
+            border: 1px none #ffffff;
+            border-radius: 0px;
+            box-shadow: 0px 0px 0px 0px rgba(2, 2, 2, 0.23);
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.23);
+            background-color: rgba(0, 183, 205, 1.00)
+        }
+
+        /* Popup Theme 1063: Default Theme */
+        .popmake-overlay.theme-1063,
+        .popmake-overlay.theme-default-theme {
+            background-color: rgba(255, 255, 255, 1.00)
+        }
+
+        .popmake.theme-1063,
+        .popmake.theme-default-theme {
+            padding: 18px;
+            border-radius: 0px;
+            border: 1px none #000000;
+            box-shadow: 1px 1px 3px 0px rgba(2, 2, 2, 0.23);
+            background-color: rgba(249, 249, 249, 1.00)
+        }
+
+        .popmake.theme-1063 .popmake-title,
+        .popmake.theme-default-theme .popmake-title {
+            color: #000000;
+            text-align: left;
+            text-shadow: 0px 0px 0px rgba(2, 2, 2, 0.23);
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 32px;
+            font-style: normal;
+            line-height: 36px
+        }
+
+        .popmake.theme-1063 .popmake-content,
+        .popmake.theme-default-theme .popmake-content {
+            color: #8c8c8c;
+            font-family: inherit;
+            font-weight: inherit;
+            font-style: normal
+        }
+
+        .popmake.theme-1063 > .popmake-close,
+        .popmake.theme-default-theme > .popmake-close {
+            height: auto;
+            width: auto;
+            left: auto;
+            right: 0px;
+            bottom: auto;
+            top: 0px;
+            padding: 8px;
+            color: #ffffff;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: 12px;
+            font-style: normal;
+            line-height: 14px;
+            border: 1px none #ffffff;
+            border-radius: 0px;
+            box-shadow: 0px 0px 0px 0px rgba(2, 2, 2, 0.23);
+            text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.23);
+            background-color: rgba(0, 183, 205, 1.00)
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{% static 'wp-content/themes/Sitio-31/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'wp-content/themes/Sitio-31/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'wp-content/themes/Sitio-31/css/logo.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'wp-content/themes/Sitio-31/css/snap.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'wp-content/themes/Sitio-31/css/orbit-1.2.3.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'wp-content/themes/Sitio-31/css/sidebar.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="{% static 'wp-content/themes/Sitio-31/css/site.css' %}" rel="stylesheet" type="text/css"/>
+    <link href="http://fonts.googleapis.com/css?family=Raleway:600%7COpen+Sans:400,700,600" rel='stylesheet'
+          type='text/css'/>
+    <link rel="icon" href="{% static 'wp-content/themes/Sitio-31/favicon.png' %}" type="image/x-icon"/>
+    <!-- <meta name="theme-color" content="#ffffff"> -->
+    {% block imgCabecera %}
+        <style>
+            header#head {
+                background-image: path(https://ads.contactociudadano.gob.ec /imagenheader/ 26.jpg);
+            }
+        </style>
+    {% endblock %}
+    <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <link href="{% static 'wp-content/themes/Sitio-31/css/ie.css" rel="stylesheet" type="text/css"/>
+        <![endif]-->
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'wp-content/themes/Sitio-31/style.css' %}"/>
+    {% block metadatos %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Empresa Eléctrica Azogues."/>
+        <meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica."/>
+
+        <!-- <link rel="shortcut icon" href="images/logo.png"/> -->
+        <!-- Facebook and Twitter integration -->
+        <meta property="og:title" content="{{ basic.titulo }}"/>
+        <meta property="og:image" content="images/slider/ventilador.png"/>
+        <meta property="og:url" content="https://megaclima.com.ec/"/>
+        <meta property="og:site_name" content="Empresa Eléctrica Azogues"/>
+        <meta property="og:description" content="Página web de la Empresa Eléctrica Regional de Azogues."/>
+        <meta name="twitter:title" content="Empresa Eléctrica Azogues"/>
+        <meta name="twitter:image" content="{{ basic.logo.url }}"/>
+        <meta name="twitter:url" content=""/>
+        <meta name="twitter:card" content="sumary"/>
+    {% endblock %}
+</head>
+
+<body>
+<div class="sidebar left hide">
+    <button class="close"><span class="fa fa-times"></span></button>
+    <a id="brand" href="#">EEA<br>Empresa Eléctrica Azogues</a>
+    <nav id="menu" data-scrollable role="navigation">
+        <form method="post" action="{% url 'noticias' %}" class="navbar-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="buscar" class="hidden">buscar</label>
+                <input type="text" id="buscar" name="search" class="form-control" title="form-text"
+                       placeholder="Buscar aquí"/>
+            </div>
+            <button class="btn" type="submit"><span class="fa fa-search"><em>Buscar</em></span></button>
+        </form>
+
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'institucion' %}">La Institución</a></li>
+            <li><a href="{% url 'servicios' %}">Requisitos para Servicios</a></li>
+
+            <li><a href="#" class='dropdown-toggle' data-toggle='dropdown'>Procesos de Contratación</a>
+                <ul class='dropdown-menu'>
+                    {% for c in menu %}
+                        <li><a {% if c.tipo == "1" %}href="{% url 'procesoscontratacion' c.pk %}"{% endif %}
+                               {% if c.tipo == "2" %}class='dropdown-toggle'
+                               data-toggle='dropdown'{% endif %}>{{ c.titulo }}</a>
+                            <ul class='dropdown-menu'>
+                                {% for s in c.procesoscontratacionnivel2_set.all %}
+                                    <li><a href="" {% if s.tipo == "2" %}class='dropdown-toggle'
+                                           data-toggle='dropdown'{% endif %}>{{ s.titulo }}</a>
+                                        <ul class='dropdown-menu'>
+                                            {% for t in s.procesoscontratacionnivel3_set.all %}
+                                                <li>
+                                                    <a href="{% url 'procesoscontratacion' c.titulo|slugify s.titulo|slugify t.pk %}">{{ t.titulo }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><a class='dropdown-toggle' data-toggle='dropdown' href="{% url 'transparencia' %}">Transparencia</a>
+                <ul class='dropdown-menu'>
+                    <li><a href="{% url 'transparencia' %}">Lista de años</a></li>
+                    <li><a href="{% url 'rendicion' %}">Rendición de Cuentas</a></li>
+                </ul>
+            </li>
+            <li><a href="{% url 'noticias' %}">Noticias</a></li>
+            {% for c in menus %}
+                <li><a href="{% url 'eea' c.pk %}">{{ c.nombre_menu }}</a></li>
+            {% endfor %}
+            <li><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Servicios</a>
+                <ul class='dropdown-menu'>
+                    {% for c in iservicios %}
+                        <li><a href='{{ c.url }}' data-toggle='dropdown'>{{ c.titulo }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+
+            <li><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Enlaces Gubernamentales</a>
+                <ul class='dropdown-menu'>
+                    <li class='dropdown-submenu'><a href='#' class='dropdown-toggle'
+                                                    data-toggle='dropdown'>Presidencia</a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='http://www.presidencia.gob.ec/el-presidente/' target='_blank'>El Presidente</a>
+                            </li>
+                            <li><a href='http://www.presidencia.gob.ec/' target='_blank'>La Presidencia</a></li>
+                            <li><a href='http://www.presidencia.gob.ec/palacio-de-gobierno/'>Palacio de Gobierno</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class='dropdown-submenu'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Vicepresidente
+                        de la República</a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='http://www.vicepresidencia.gob.ec/vicepresidente/' target='_blank'>La
+                                Vicepresidenta</a></li>
+                            <li><a href='http://www.vicepresidencia.gob.ec/' target='_blank'>La Vicepresidencia</a></li>
+                            <li><a href='http://www.vicepresidencia.gob.ec/programas/' target='_blank'>Programas /
+                                Servicios</a></li>
+                        </ul>
+                    </li>
+                    <li class='dropdown-submenu'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Secretarías
+                        Nacionales</a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='http://www.comunicacion.gob.ec/' target='_blank'>Comunicación</a></li>
+                            <li><a href='http://www.politica.gob.ec/' target='_blank'>Gestión de la Política</a></li>
+                            <li><a href='http://www.planificacion.gob.ec/' target='_blank'>Planificación y
+                                Desarrollo</a></li>
+                        </ul>
+                    </li>
+                    <li class='dropdown-submenu'><a href='#' class='dropdown-toggle'
+                                                    data-toggle='dropdown'>Secretarías</a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='http://www.agua.gob.ec/' target='_blank'>Agua</a></li>
+                            <li><a href='http://www.educacionsuperior.gob.ec/' target='_blank'>Educación Superior,
+                                Ciencia, Tecnología e Innovación</a></li>
+                            <li><a href='http://www.gestionderiesgos.gob.ec/' target='_blank'>Gestión de Riesgos</a>
+                            </li>
+                            <li><a href='http://www.inteligencia.gob.ec/' target='_blank'>Inteligencia</a></li>
+                        </ul>
+                    </li>
+                    <li class='dropdown-submenu'><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Ministerios
+                        de la ( A - D )</a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='http://www.agricultura.gob.ec/'>Agricultura y Ganadería</a></li>
+                            <li><a href='http://www.viceministerioap.gob.ec/'>Acuacultura y Pesca</a></li>
+                            <li><a href='http://www.ambiente.gob.ec'>Ambiente</a></li>
+                            <li><a href='http://www.comercioexterior.gob.ec'>Comercio Exterior</a></li>
+                            <li><a href='http://www.culturaypatrimonio.gob.ec'>Cultura y Patrimonio</a></li>
+                            <li><a href='http://www.defensa.gob.ec'>Defensa Nacional</a></li>
+                            <li><a href='http://www.deporte.gob.ec'>Deporte</a></li>
+                            <li><a href='http://www.habitatyvivienda.gob.ec'>Desarrollo Urbano y Vivienda</a></li>
+                        </ul>
+                    </li>
+                    <li class='dropdown-submenu'><a href='#' class='dropdown-toggle' data-toggle='drop-down'>Ministerios
+                        de la ( E - J ) </a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='http://educacion.gob.ec'>Educación</a></li>
+                            <li><a href='http://www.energia.gob.ec'>Electricidad y Energía Renovable</a></li>
+                            <li><a href='http://www.finanzas.gob.ec'>Economía y Finanzas</a></li>
+                            <li><a href='http://www.hidrocarburos.gob.ec/'>Hidrocarburos</a></li>
+                            <li><a href='http://www.inclusion.gob.ec'>Inclusión Económica y Social</a></li>
+                            <li><a href='http://www.industrias.gob.ec'>Industrias y Productividad</a></li>
+                            <li><a href='http://www.ministeriointerior.gob.ec'>Interior</a></li>
+                            <li><a href='http://www.justicia.gob.ec'>Justicia, Derechos Humanos y Cultos</a></li>
+                        </ul>
+                    </li>
+                    <li class='dropdown-submenu'><a href='#' class='dropdown-toggle' data-toggle='drop-down'>Ministerios
+                        de la ( M - T ) </a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='http://www.mineria.gob.ec/'>Minería</a></li>
+                            <li><a href='http://www.cancilleria.gob.ec'>Relaciones Exteriores y Movilidad Humana</a>
+                            </li>
+                            <li><a href='http://www.salud.gob.ec'>Salud Pública</a></li>
+                            <li><a href='http://www.telecomunicaciones.gob.ec'>Telecomunicaciones y de la Sociedad de la
+                                Información</a></li>
+                            <li><a href='http://www.obraspublicas.gob.ec'>Transporte y Obras Públicas</a></li>
+                            <li><a href='http://www.trabajo.gob.ec'>Trabajo</a></li>
+                            <li><a href='http://www.turismo.gob.ec'>Turismo</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href='#' class='dropdown-toggle' data-toggle='dropdown'>Proyecto Personajes Emblemáticos </a>
+                <ul class='dropdown-menu'>
+                    <li class='dropdown-submenu'><a href='http://www.presidencia.gob.ec/personajes-emblematicos/'
+                                                    target='_blank'>Conoce el Proyecto</a>
+                    <li class='dropdown-submenu'><a href='http://www.presidencia.gob.ec/manuela-espejo/'
+                                                    target='_blank'>Manuela Espejo</a>
+                        <a href='http://www.presidencia.gob.ec/fernando-daquilema/' target='_blank'>Fernando
+                            Daquilema</a>
+                        <a href='http://www.presidencia.gob.ec/jose-joaquin-de-olmedo/' target='_blank'>José Joaquín de
+                            Olmedo</a>
+                        <a href='http://www.presidencia.gob.ec/alonso-de-illescas/' target='_blank'>Alonso de
+                            Illescas </a>
+                </ul>
+            </li>
+        </ul>
+        <div id="social">
+            <div class="inner">
+                <ul class="list-inline">
+                    <li><a target="_blank" href="{{ basic.twitter }}" data-toggle="tooltip" title="red social twitter"
+                           data-placement="bottom">
+                        <span class="fa fa-twitter"><em>twitter</em></span>
+                    </a></li>
+                    <li><a target="_blank" href="{{ basic.facebook }}" data-toggle="tooltip" title="red social facebook"
+                           data-placement="bottom">
+                        <span class="fa fa-facebook-f"><em>facebook</em></span>
+                    </a></li>
+                    <li><a target="_blank" href="{{ basic.youtube }}" data-toggle="tooltip" title="red social youtube"
+                           data-placement="bottom">
+                        <span class="fa fa-youtube"><em>youtube</em></span>
+                    </a></li>
+                    <li><a target="_blank" href="{{ basic.flickr }}" data-toggle="tooltip" title="red social flickr"
+                           data-placement="bottom">
+                        <span class="fa fa-flickr"><em>flickr</em></span>
+                    </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div id="content">
+    <header id="head">
+        <div class="inner">
+            <div id="nomobile" class="container-fluid">
+                <h1 id="logo">
+                    <a href="{% url 'index' %}"><img src="{{ basic.logo.url }}" alt=""></a>
+                </h1>
+                {% block tituloCabecera %}
+                    <div class="leyenda-header hidden-xs clearfix">
+                        <div class="text-right">Ecuador</div>
+                    </div>
+                {% endblock %}
+                <div class="separator"></div>
+                <div id="accesibilidad">
+                    <div class="inner">
+                        <ul>
+                            <!-- <li><a href="#" tabindex="2" data-toggle="tooltip" data-placement="right"><span class="fa fa-child"><em>Accesibilidad</em></span></a></li> -->
+                            <li><a href="{% url 'transparencia' %}" tabindex="3" data-toggle="tooltip"
+                                   data-placement="right"><span class="fa fa-eye"><em>Transparencia</em></span></a></li>
+                            <!-- <li><a href="#" tabindex="4" data-toggle="tooltip" title="English" data-placement="right"><span class="fa fa-flag"><em>Idioma</em></span></a></li> -->
+                        </ul>
+                    </div>
+                </div>
+                <div class="social">
+                    <div class="inner">
+                        <ul>
+                            <li><a target="_blank" href="{{ basic.twitter }}" tabindex="5" data-toggle="tooltip"
+                                   data-placement="left">
+                                <span class="fa fa-twitter"><em>twitter</em></span>
+                            </a></li>
+                            <li><a target="_blank" href="{{ basic.facebook }}" tabindex="6" data-toggle="tooltip"
+                                   data-placement="left">
+                                <span class="fa fa-facebook-f"><em>facebook</em></span>
+                            </a></li>
+                            <li><a target="_blank" href="{{ basic.youtube }}" tabindex="7" data-toggle="tooltip"
+                                   data-placement="left">
+                                <span class="fa fa-youtube"><em>youtube</em></span>
+                            </a></li>
+                            <li><a target="_blank" href="{{ basic.flickr }}" tabindex="8" data-toggle="tooltip"
+                                   data-placement="left">
+                                <span class="fa fa-flickr"><em>flickr</em></span>
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="vermobile">
+                    <nav class="navbar navbar-mobile">
+                        <div class="navbar-header">
+                            <button type="button" id="boton-responsivo" class="navbar-toggle collapsed"
+                                    data-toggle="collapse" data-target="#menu-principal-mobile" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="collapse navbar-collapse" id="menu-principal-mobile">
+                            <ul id="menu-superiorv30" class="nav navbar-nav">
+                                <li id="menu-item-27"
+                                    class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-27">
+                                    <a href="{% url 'index' %}" class='menu-image-title-after'><span
+                                            class="menu-image-title">Inicio</span></a></li>
+                                <li id="menu-item-468"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-468"><a
+                                        href="{% url 'institucion' %}" class='menu-image-title-after'><span
+                                        class="menu-image-title">La Institución</span></a></li>
+                                <li id="menu-item-258"
+                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-258"><a
+                                        href="{% url 'transparencia' %}" class='menu-image-title-after'><span
+                                        class="menu-image-title">Transparencia</span></a></li>
+                                <li id="menu-item-35"
+                                    class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-35"><a
+                                        href="{% url 'noticias' %}" class='menu-image-title-after'><span
+                                        class="menu-image-title">Noticias</span></a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="verdesktop">
+                    <a href="#" id="toggle-sidebar-menu" data-toggle="sidebar-menu" tabindex="11"
+                       class="hidden-xs"><span class="fa fa-bars"></span> MENÚ</a>
+                </div>
+                <div id="titulo-principal"></div>
+                <div id="block-search-form" class="clearfix">
+                    <div class="form-actions">
+                        <a href="#search" tabindex="9"><span class="fa fa-search"><em>buscar</em></span></a>
+                    </div>
+                    <div class="form-type-textfield" style="display:none">
+                        <label for="form-searchf" id="label-searchf">Buscar</label>
+                        <form method="POST" action="{% url 'noticias' %}">
+                            {% csrf_token %}
+                            <input id="form-searchf" type="search" class="form-searchfsearch-query form-text"
+                                   title="form-text" name="search" maxlength="128" size="20" placeholder="Buscar aquí"
+                                   tabindex="10"/>
+                            <input type="submit" class="hidden" value="Buscar">
+                        </form>
+                    </div>
+                    <button class="btn" type="submit" style="display: none;"><em>Buscar</em></button>
+
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="main" class="ep">
+        {% block contenido %}
+        {% endblock %}
+    </div>
+
+
+    <footer id="footer-bot">
+        <div class="container-fluid">
+            <div class="top">
+                <div class="row no-gutter">
+                    <div class="col-md-4 col-sm-4 col-xs-12"><a target="_blank"
+                                                                href="https://aplicaciones.administracionpublica.gob.ec/"
+                                                                style="height: 39px;">Contacto Ciudadano</a></div>
+                    <div class="col-md-4 col-sm-4 col-xs-12"><a target="_blank"
+                                                                href="http://www.presidencia.gob.ec/personajes-emblematicos/"
+                                                                style="height: 39px;">Proyecto Personajes
+                        Emblemáticos</a></div>
+                    <div class="col-md-4 col-sm-4 col-xs-12"><a target="_blank" href="http://sni.gob.ec/inicio"
+                                                                style="height: 39px;">Sistema Nacional de Información
+                        (SNI)</a></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <img title="EEA &#8211; Empresa Eléctrica Regional de Azogues"
+                             alt="EEA &#8211; Empresa Empresa Eléctrica Regional de Azogues"
+                             src="{% static 'wp-content/themes/Sitio-31/images/logo_presidencia.png' %}"
+                             longdesc="longdesc/logdesc.html">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12 text">
+                        <h1>pie de pagina</h1>
+                        {{ basic.piepagina|safe }}
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <img title="Ecuador Ama la Vida" alt="Ecuador Ama la Vida"
+                             src="{% static 'wp-content/themes/Sitio-31/images/ecuadoramalavida_logo.png' %}"
+                             width="138" height="37" longdesc="longdesc/logdesc.html">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+<script src="{% static 'wp-content/themes/Sitio-31/js/jquery-1.11.3.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'wp-content/themes/Sitio-31/js/bootstrap.js' %}" type="text/javascript"></script>
+<script src="{% static 'wp-content/themes/Sitio-31/js/custom.js' %}" type="text/javascript"></script>
+<script src="{% static 'wp-content/themes/Sitio-31/js/jquery.nicescroll.min.js' %}" type="text/javascript"></script>
+<!--<script src="{% static 'wp-content/themes/Sitio-31/js/jquery.tinycarousel.min.js" type="text/javascript"></script>-->
+<script src="{% static 'wp-content/themes/Sitio-31/js/mobile-detect.min.js' %}"></script>
+<script src="{% static 'wp-content/themes/Sitio-31/js/responsiveCarousel.js' %}" type="text/javascript"></script>
+<script src="{% static 'wp-content/themes/Sitio-31/js/jquery.orbit-1.2.3.min.js' %}" type="text/javascript"></script>
+
+{% block script %}
+
+{% endblock %}
+<script src="{% static 'wp-content/themes/Sitio-31/js/youtube.js' %}" type="text/javascript"></script>
+
+</html>

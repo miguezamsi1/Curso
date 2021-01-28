@@ -1,0 +1,58 @@
+{% extends 'noticias.html' %}
+{% load static %}
+{% load cropping %}
+{% block metadatos %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="{{noticias.descripcion}}" />
+	<meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica." />
+	<link rel="shortcut icon" href="images/logo.png"/>
+	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="{{noticias.titulo}}" />
+	<meta property="og:image" content="{{noticias.imagen.url}}" />
+	<meta property="og:url" content="http//eea.gob.ec{{request.get_full_path}}" />
+	<meta property="og:site_name" content="Empresa Eléctrica Azogues" />
+	<meta property="og:description" content="{{noticias.descripcion}}" />
+	<meta name="twitter:title" content="{{noticias.titulo}}" />
+	<meta name="twitter:image" content="{{noticias.imagen.url}}" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="sumary" />
+{% endblock %}
+{% block imgCabecera %}
+  <style>
+    header#head {
+      background-image: path({{cabecera.imagen.url}});
+    }
+  </style>
+  {% endblock %}
+{%block tituloCabecera%}
+  <div class="leyenda-header hidden-xs clearfix">
+    <div class="text-right">{{cabecera.titulo}}</div>
+  </div>
+{% endblock%}
+{% block contenido %}
+<div class="container-fluid">
+	<div class="row">
+		{% if cont.texto_lateral %}
+		<div class="col-md-3">
+			<div style="background-color: #019be2;margin-top: -2.5%; margin-left: -5.5%; margin-right: -5.5%; padding: 4%; color: white;">
+				<br>
+				<p><strong>{{cont.izq_titulo}}</strong></p>
+				<p class="text-justify">{{cont.izq_contenido}}</p>
+				<p class="text-justify"></p>
+			</div>
+		</div>
+		<div class="col-md-9 scroll altura color fucsia" style="border-top: 8px solid; border-color: #de3176; margin-top: -0.5%;">
+			<br>
+			<br>
+			{{cont.contenido|safe}}
+		</div>
+		{% else  %}
+		<div class="col-md-12 scroll altura color fucsia" style="border-top: 8px solid; border-color: #de3176; margin-top: -0.5%;">
+			<br>
+			<br>
+			{{cont.contenido|safe}}
+		</div>
+		{% endif  %}
+	</div>
+</div>
+{% endblock %}

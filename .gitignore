@@ -1,0 +1,5 @@
+__pycache__/
+media/*.pdf
+media/uploads/
+static/docs/
+static/video/

@@ -1,0 +1,9 @@
+django==2.2
+django-admin-generator
+django-ckeditor
+#django-geoposition==0.3.1
+django-image-cropping
+django-utils2==2.5.0
+easy-thumbnails
+facebook-sdk==3.0.0
+Pillow

@@ -1,0 +1,86 @@
+{% extends 'institucion.html' %}
+{% load static %}
+{% load cropping %}
+{% block metadatos %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="{{institucion.descripcion}}" />
+	<meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica." />
+	<link rel="shortcut icon" href="images/logo.png"/>
+	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="{{institucion.titulo}}" />
+	<meta property="og:image" content="{{institucion.imagen.url}}" />
+	<meta property="og:url" content="http//eea.gob.ec{{request.get_full_path}}" />
+	<meta property="og:site_name" content="Empresa Eléctrica Azogues" />
+	<meta property="og:description" content="{{institucion.descripcion}}" />
+	<meta name="twitter:title" content="{{institucion.titulo}}" />
+	<meta name="twitter:image" content="{{institucion.imagen.url}}" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="sumary" />
+{% endblock %}
+{% block imgCabecera %}
+  <style>
+    header#head {
+      background-image: path({{cabecera.imagen.url}});
+    }
+  </style>
+  {% endblock %}
+{%block tituloCabecera%}
+          <div class="leyenda-header hidden-xs clearfix">
+            <div class="text-right">{{cabecera.titulo}}</div>
+          </div>
+{% endblock%}
+{% block contenido %}
+	<style>
+		.line-right{
+			border-right: 1px solid #CCC;
+		}
+	</style>
+	<div class="container-fluid" style="background-image: path({% static 'agua.png' %});">
+		<div class="row">
+			<div class="col-md-9 col-sm-6 line-right" >
+				<h1>{{institucion.titulo}}</h1>
+				<p class="text-right"><small>{{institucion.fechap}}</small></p>
+				<hr>
+			</div>
+			<div class="col-md-9 col-sm-6 line-right" >
+				{{institucion.contenido|safe}}
+			</div>
+			<div class="col-md-3 col-sm-6">
+				<!-- Compartir contenido -->
+				<h2 class="comparte importante">Comparte esta publicación:</h2>
+				<div class="met_share_line met_bgcolor2 float-share">
+					<a href="#" onclick="javascript:window.open('https://twitter.com/share?url=http://www.eea.gob.ec{{ request.path }}','compartir','menubar = 1, resizable = 1, width = 480, height = 250')" class="met_color_transition"><i class="fa fa-twitter"></i> Tweet</a>
+					<a href="#" onclick="javascript:window.open('https://www.facebook.com/sharer.php?u=http://www.eea.gob.ec{{ request.path }}','menubar = 1, resizable = 1, width = 480, height = 250')" class="met_color_transition"><i class="fa fa-facebook"></i> Compartir</a>
+					<a href="#" onclick="javascript:window.print()" rel="nofollow" class="met_color_transition"><i class="fa fa-print"></i> Imprimir</a>
+					<a href="mailto:?subject=EEA – {{institucion.descripcion|safe}} Leer más: http://www.eea.gob.ec{{ request.path }}" class="met_color_transition"><i class="fa fa-envelope"></i> Mail</a>
+				</div>
+				<!-- Fin compartir contenido -->
+				<!-- Entérate -->
+				<div id="contacto-gob" class="bloque">
+					<h2>Entérate</h2>
+					<div id="contacto-carousel" class="carousel" data-ride="carousel">
+						<div class="carousel-inner" role="listbox">
+							{% for c in enterate %}
+							<div class="item {% if forloop.counter0 == 0 %}active{% endif %}">
+								<a href="{{c.link}}" target="_blank">
+									<img src="{% cropped_thumbnail c 'imagen_red1' %}" alt="{{c.titulo}}" longdesc="logdesc/longdesc.html" class="img-responsive">
+								</a>
+							</div>							
+							{% endfor %}
+						</div>
+						<ol class="carousel-indicators indicator-0">
+							{% for c in enterate %}
+							<li data-target="#contacto-carousel" data-slide-to="{{forloop.counter0}}" class="active" style="width: 140px;">
+								<a><em>{{c.titulo}}</em></a>
+							</li>							
+							{% endfor %}
+
+						</ol>
+					</div>
+				</div>
+				<!-- Fin Entérate -->
+			</div>
+		</div>
+		
+	</div>
+{% endblock %}

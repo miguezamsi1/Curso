@@ -1,0 +1,103 @@
+{% extends 'noticias.html' %}
+{% load static %}
+{% load cropping %}
+{% block metadatos %}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="{{noticias.descripcion}}" />
+	<meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica." />
+	<link rel="shortcut icon" href="images/logo.png"/>
+	<!-- Facebook and Twitter integration -->
+	<meta property="og:title" content="{{noticias.titulo}}" />
+	<meta property="og:image" content="{{noticias.imagen.url}}" />
+	<meta property="og:url" content="http//eea.gob.ec{{request.get_full_path}}" />
+	<meta property="og:site_name" content="Empresa Eléctrica Azogues" />
+	<meta property="og:description" content="{{noticias.descripcion}}" />
+	<meta name="twitter:title" content="{{noticias.titulo}}" />
+	<meta name="twitter:image" content="{{noticias.imagen.url}}" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="sumary" />
+{% endblock %}
+{% block imgCabecera %}
+  <style>
+    header#head {
+      background-image: path({{cabecera.imagen.url}});
+    }
+  </style>
+  {% endblock %}
+{%block tituloCabecera%}
+  <div class="leyenda-header hidden-xs clearfix">
+    <div class="text-right">{{cabecera.titulo}}</div>
+  </div>
+{% endblock%}
+{% block contenido %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-3">
+			<div style="background-color: #019be2;margin-top: -2.5%; margin-left: -5.5%; margin-right: -5.5%; padding: 4%; color: white;">
+				<br>
+				<p><strong>LEY ORGÁNICA DE TRANSPARENCIA Y ACCESO A LA INFORMACIÓN PÚBLICA (LOTAIP)&nbsp;</strong></p>
+				<p class="text-justify">La Ley Orgánica de Transparencia y Acceso a la Información Pública (LOTAIP) plantea la participación ciudadana y el derecho de acceso a la información relacionada con asuntos públicos, para ejercer un efectivo control y exigir la rendición de cuentas a las instituciones gubernamentales o aquellas que perciben recursos estatales.</p>
+				<p class="text-justify"></p>
+			</div>
+			<h4>Seleccione un año:</h4>
+			<ul class="list-unstyled">
+
+			{% for c in anios %}
+				<li class="btn btn-default">
+					<a href="{% url 'transparenciaanio' c.pk %}">{{c.nombre_ano}}</a>
+				</li>
+			{% endfor %}
+			</ul>
+		</div>
+		<div class="col-md-9 scroll altura color fucsia" style="border-top: 8px solid; border-color: #de3176; margin-top: -0.5%;">
+			<br>
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				{% for key, values in documentos.items %}
+					<div class="panel panel-default">
+						<div class="panel-heading" style="padding: 0.8%;" role="tab" id="heading{{forloop.counter0}}">
+							<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{forloop.counter0}}" aria-expanded="{% if forloop.counter0 == 0%}true{%else%}false{%endif%}" aria-controls="collapse{{forloop.counter0}}">
+								{{key}}
+							</a>
+							
+						</div>
+						<div id="collapse{{forloop.counter0}}" class="panel-collapse {% if forloop.counter0 == 0%}collapse in{%else%}collapse{%endif%}" role="tabpanel" aria-labelledby="heading{{forloop.counter0}}">
+							<div class="panel-body">
+								{% for c in values %}
+								
+									<ul class="list-group">
+										<li class="list-group-item">
+											<span class="badge" style="color: black; background: white; border: 1px solid; border-color: #0074EA;"><a href="/media/{{c.documento}}" download="{{c.documento}}" onclick="funPost({{c.pk}},{{c.nro_descargas}})">Descargar PDF</a></span>
+											<span class="badge" style="color: black; background: white; border: 1px solid; border-color: #0074EA;"><a href="/media/{{c.documento}}" target="_blank">Ver PDF</a></span>
+											{{c.nombre}}
+											<span class="badge"><small id="doc{{c.pk}}">Nro. Descargas: {{c.nro_descargas}}</small></span>
+										</li>										
+									</ul>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	function funPost(ide, nro_descargas) {
+	$.ajax({
+	type: "POST",
+	url: window.location.href ,
+    data: {
+        ide: ide,
+        url: window.location.href,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+    },
+    success: function(){
+    	// $("#doc"+ide).text("Nro. Descargas: " + (nro_descargas + 1));
+		location.reload();
+  	}
+	});
+	
+		// alert("HOLA MUNDO: " + ide);
+	}
+</script>
+{% endblock %}

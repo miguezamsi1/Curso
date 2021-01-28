@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cropping %}
+{% block metadatos %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Empresa Eléctrica Azogues."/>
+    <meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica."/>
+
+    <link rel="shortcut icon" href="images/logo.png"/>
+    <!-- Facebook and Twitter integration -->
+    <meta property="og:title" content="Empresa Eléctrica Azogues"/>
+    <meta property="og:image" content="images/slider/ventilador.png"/>
+    <meta property="og:url" content="https://eea.gob.ec/"/>
+    <meta property="og:site_name" content="Empresa Eléctrica Azogues"/>
+    <meta property="og:description"
+          content="La empresa eléctrica de Azogues."/>
+    <meta name="twitter:title" content="Empresa Eléctrica Azogues"/>
+    <meta name="twitter:image" content="images/slider/ventilador.png"/>
+    <meta name="twitter:url" content=""/>
+    <meta name="twitter:card" content="sumary"/>
+{% endblock %}
+{% block imgCabecera %}
+    <style>
+        header#head {
+            background-image: url("{% for c in cabecera %}{{c.imagen.url}}{%endfor%}") !important;
+        }
+    </style>
+{% endblock %}
+{% block tituloCabecera %}
+
+    <div class="leyenda-header hidden-xs clearfix">
+        <div class="text-right">{% for c in cabecera %}{{ c.titulo }}{% endfor %}</div>
+    </div>
+{% endblock %}
+{% block contenido %}
+    {% if basic.popup_habilitar %}
+        <!-- <div id="myModal" class="modal fade bs-example-modal-lg"> -->
+        <div id="myModal" class="modal fade bs-example-modal-lg">
+            <!-- <div class="modal-dialog modal-lg"> -->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close " data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <br>
+                        <!-- <h4 class="modal-title">Confirmation</h4> -->
+                    </div>
+                    <div class="modal-body">
+                        <img width="100%" src="{{ basic.popup.url }}" alt="">
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <section id="slides">
+                    <h2 class="importante rojo1">Noticias</h2>
+                    <div id="main-carousel" class="carousel" data-ride="carousel">
+                        <button id="control"><span class="fa fa-pause"><em>pausa</em></span></button>
+                        <div class="carousel-inner" role="listbox">
+                            {% for c in noticias %}
+                                <div class="item {% if forloop.counter0 == 0 %}active{% endif %}"><a
+                                        href="{% url 'noticia_individual' c.pk c.titulo|slugify %}">
+                                    <img src="{% cropped_thumbnail c 'imagen_red1' %}" alt="Médico del Barrio"
+                                         longdesc="logdesc/longdesc.html"/></a>
+                                    <div class="carousel-caption">
+                                        <strong><a
+                                                href="{% url 'noticia_individual' c.pk c.titulo|slugify %}">{{ c.titulo|upper }}</a></strong>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <ol class="carousel-indicators indicator-0">
+                            {% for c in noticias %}
+                                <li data-target="#main-carousel" data-slide-to="{{ forloop.counter0 }}"
+                                    class="{% if forloop.counter0 == 0 %}active{% endif %}">
+                                    <a><em>{{ c.titulo }}</em></a></li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </section>
+                <section id="programas">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h2 class="importante">Servicios <br><br>en línea</h2>
+                        </div>
+                        <div class="col-md-10">
+                            <div id="nav-programas" class="crsl-nav">
+                                <span class="buttons previous ico-programas-left"></span>
+                                <span class="buttons next ico-programas-right"></span>
+                            </div>
+                            <div class="viewport">
+                                <div class="crsl-programas" data-navigation="nav-programas">
+                                    <div class="crsl-wrap">
+                                        {% for c in iservicios %}
+                                            <a target="_blank" href="{{ c.url }}" class='menu-image-title-after'><i
+                                                    class="_mi _before dashicons {{ c.icono }}"></i>{{ c.titulo }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-3">
+                <h2>Enlaces de Interés</h2>
+                <div id="banners">
+                    {% for c in iei %}
+                        <a href="{{ c.url }}"><img width="275" height="auto" src="{{ c.imagen.url }}" class="img-swap"
+                                                   alt="1" data-img1="{{ c.imagen.url }}"
+                                                   data-img2="{{ c.imagen.url }}"></a>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+
+            <aside class="col-md-3">
+                <div id="videos" class="bloque">
+                    <h2>La empresa informa</h2>
+                    <div id="videos-carousel" class="carousel" data-ride="carousel" data-pause="">
+                        <div class="carousel-inner" role="listbox">
+                            {% for c in einforma %}
+                                <div class="item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                    <!-- https://www.youtube.com/embed/Bn__rsOcxFQ?rel=0&amp;showinfo=0&amp;enablejsapi=1 -->
+                                    <!-- 1 :: Bn__rsOcxFQ -->
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <div id="einforma{{ forloop.counter }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <ol class="carousel-indicators">
+                            {% for c in einforma %}
+                                <li data-target="#videos-carousel" data-slide-to="{{ forloop.counter0 }}"
+                                    class="{% if forloop.counter0 == 0 %}active{% endif %}"><a href="#ginforma"><em>video
+                                    1</em></a></li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+                <div id="contacto-gob" class="bloque">
+                    <h2>Entérate</h2>
+                    <div id="contacto-carousel" class="carousel" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            {% for c in enterate %}
+                                <div class="item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                    <a href="{{ c.link }}" target="_blank">
+                                        <img src="{% cropped_thumbnail c 'imagen_red1' %}" alt="{{ c.titulo }}"
+                                             longdesc="logdesc/longdesc.html" class="img-responsive">
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <ol class="carousel-indicators indicator-0">
+                            {% for c in enterate %}
+                                <li data-target="#contacto-carousel" data-slide-to="{{ forloop.counter0 }}"
+                                    class="active" style="width: 140px;">
+                                    <a><em>{{ c.titulo }}</em></a>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+
+
+            </aside>
+        </div>
+        <hr>
+        <br>
+        <div class="row">
+            <div class="col-md-9">
+                <div id="map"></div>
+            </div>
+            <div class="col-md-3">
+                <div id="videos" class="bloque">
+                    <h2>Tu Gobierno informa</h2>
+                    <div id="videos-carousell" class="carousel" data-ride="carousel" data-pause="">
+                        <div class="carousel-inner" role="listbox">
+                            {% for c in informa %}
+                                <div class="item {% if forloop.counter0 == 0 %}active{% endif %}">
+                                    <!-- https://www.youtube.com/embed/Bn__rsOcxFQ?rel=0&amp;showinfo=0&amp;enablejsapi=1 -->
+                                    <!-- 1 :: Bn__rsOcxFQ -->
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <div id="player{{ forloop.counter }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <ol class="carousel-indicators">
+                            {% for c in informa %}
+                                <li data-target="#videos-carousell" data-slide-to="{{ forloop.counter0 }}"
+                                    class="{% if forloop.counter0 == 0 %}active{% endif %}"><a href="#ginforma"><em>video
+                                    1</em></a></li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            margin: 0 auto;
+            height: 200px;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+    </style>
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        function onYouTubeIframeAPIReady() {
+            {% for x in informa %}
+                player{{forloop.counter}} = new YT.Player('player{{forloop.counter}}', {
+                    height: '360',
+                    width: '640',
+                    videoId: '{{x.link}}',
+                    playerVars: {
+                        fs: 1,
+                        autoplay: 0,
+                        showinfo: 0,
+                        controls: 1
+                    },
+                    events: {
+                        'onReady': onPlayerReady1,
+                        'onError': onPlayerError1
+                    }
+                });
+            {% endfor %}
+            {% for x in einforma %}
+                einforma{{forloop.counter}} = new YT.Player('einforma{{forloop.counter}}', {
+                    height: '360',
+                    width: '640',
+                    videoId: '{{x.link}}',
+                    playerVars: {
+                        fs: 1,
+                        autoplay: 0,
+                        showinfo: 0,
+                        controls: 1
+                    },
+                    events: {
+                        'onReady': onPlayerReady1,
+                        'onError': onPlayerError1
+                    }
+                });
+            {% endfor %}
+
+        }
+    </script>
+    <script>
+        var map;
+        // var lat = {{basic.mapa.longitude}};
+        var str_lat = "{{basic.mapa.latitude}}";
+        var str_lon = "{{basic.mapa.longitude}}";
+        var lat = parseFloat(str_lat.replace(",", "."));
+        var lon = parseFloat(str_lon.replace(",", "."));
+        var myLatLng = {lat: lat, lng: lon}
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: lat, lng: lon},
+                zoom: {{basic.zoom}}
+            });
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: '{{basic.nombre_marcador}}'
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-dah7HhysKLNNjPnC8Qlt27l6JJzLsY&callback=initMap"
+            async defer></script>
+
+    {% if basic.popup_habilitar %}
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#myModal").modal('show');
+                setTimeout(function () {
+                    $('#myModal').modal('hide');
+                }, {{basic.popup_tiempo}}000);
+            });
+        </script>
+    {% endif %}
+{% endblock %}
