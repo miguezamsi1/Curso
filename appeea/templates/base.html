@@ -20,7 +20,8 @@
             padding: 0 !important;
         }
     </style>
-    <link rel='stylesheet' href="{% static 'wp-includes/css/dashicons.min5b31.css' %}" type='text/css' media='all'/>
+    <link rel='stylesheet' href="https://cdn.jsdelivr.net/npm/@icon/dashicons@0.9.0-alpha.3/dashicons.css"
+          type='text/css' media='all'/>
     <link rel='stylesheet' href="{% static 'wp-includes/css/extra.min.css' %}" type='text/css' media='all'/>
     <link rel='stylesheet' href="{% static 'wp-includes/css/site.min.css' %}" type='text/css' media='all'/>
     <link rel='stylesheet' href="{% static 'wp-includes/css/menu-image.css' %}" type='text/css' media='all'/>
@@ -608,6 +609,7 @@
                             Illescas </a>
                 </ul>
             </li>
+            <li><a href="{% url 'prueba' %}">Prueba</a></li>
         </ul>
         <div id="social">
             <div class="inner">
@@ -786,7 +788,7 @@
 <script src="{% static 'wp-content/themes/Sitio-31/js/bootstrap.js' %}" type="text/javascript"></script>
 <script src="{% static 'wp-content/themes/Sitio-31/js/custom.js' %}" type="text/javascript"></script>
 <script src="{% static 'wp-content/themes/Sitio-31/js/jquery.nicescroll.min.js' %}" type="text/javascript"></script>
-<!--<script src="{% static 'wp-content/themes/Sitio-31/js/jquery.tinycarousel.min.js" type="text/javascript"></script>-->
+{#<script src="{% static 'wp-content/themes/Sitio-31/js/jquery.tinycarousel.min.js" type="text/javascript"></script>#}
 <script src="{% static 'wp-content/themes/Sitio-31/js/mobile-detect.min.js' %}"></script>
 <script src="{% static 'wp-content/themes/Sitio-31/js/responsiveCarousel.js' %}" type="text/javascript"></script>
 <script src="{% static 'wp-content/themes/Sitio-31/js/jquery.orbit-1.2.3.min.js' %}" type="text/javascript"></script>

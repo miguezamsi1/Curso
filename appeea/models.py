@@ -402,3 +402,12 @@ class RendicionDocumentos(models.Model):
 
     def __str__(self):
         return u'%s' % self.nombre_documento
+
+
+class Reclamos(models.Model):
+    nombre = models.CharField(max_length=50)
+    email = models.EmailField(max_length=100)
+    reclamo = models.TextField(max_length=100)
+
+    def __str__(self):
+        return u'%s' % self.nombre

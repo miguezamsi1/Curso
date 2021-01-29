@@ -23,6 +23,7 @@ class MenuAdmin(admin.ModelAdmin):
 
 class CabeceraAdmin(admin.ModelAdmin):
     list_display = ('id_cabecera', 'titulo', 'imagen')
+    search_fields = ('titulo',)
 
 
 class IndexGeneralAdmin(admin.ModelAdmin):

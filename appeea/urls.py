@@ -3,10 +3,11 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from . import views
+from .views import prueba
 
 urlpatterns = [
                   path('', views.index, name='index'),
-                  path(r'^noticias/$', views.noticias, name='noticias'),
+                  path('noticias/', views.noticias, name='noticias'),
                   path(r'^programasservicios/$', views.programasservicios, name='programasservicios'),
                   path(r'^noticias/(?P<ide>\d+)/(?P<url>[\w\-]+)/$', views.noticias_cat, name='noticias_cat'),
                   path(r'^noticias/detalle/(?P<ide>\d+)/(?P<url>[\w\-]+)/$', views.noticia_individual,
@@ -33,5 +34,5 @@ urlpatterns = [
                        name='procesoscontratacion'),
                   path(r'^procesoscontratacion/(?P<ide>[\w\-]+)/(?P<ide2>[\w\-]+)/(?P<ide3>\d+)/$',
                        views.procesoscontratacion3, name='procesoscontratacion'),
-
+                  path('prueba', prueba, name="prueba")
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

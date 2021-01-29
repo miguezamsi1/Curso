@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load cropping %}
+{% block contenido %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <h2 class="text-center">TITULO 1</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for noticia in lista_noticias %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ noticia.titulo | slice:20 }}...</td>
+                            <td>{{ noticia.estado }}</td>
+                            <td>{{ noticia.fechap }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3">
+                <h2 class="text-center">ÚLTIMAS NOTICIAS</h2>
+                <div class="row">
+                    {% for noticia in lista_recomendaciones %}
+                        <div class="col-md-6">
+                            <img width="100%" src="{% cropped_thumbnail noticia 'imagen_red2' %}" alt="">
+                            <p>{{ noticia.titulo | slice:45 }}{% if noticia.titulo|length > 45 %}...{% endif %}</p>
+                        </div>
+                        {{ form.as_p }}
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

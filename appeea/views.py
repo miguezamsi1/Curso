@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 # Login required
 # Correo
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
 from django.shortcuts import render
 
 from .models import *
@@ -225,7 +224,7 @@ def transparenciaanio(request, ide):
                                                                                           'nombre_documento',
                                                                                           'subir_documento',
                                                                                           'nro_descargas').order_by(
-            'id_transparenciaano', 'nombre_documento'):
+        'id_transparenciaano', 'nombre_documento'):
         documentos[result['id_transparenciames__nombre_mes']].append(
             {'nombre': result['nombre_documento'], 'documento': result['subir_documento'],
              'nro_descargas': result['nro_descargas'], 'pk': result['pk']})
@@ -320,7 +319,7 @@ def rendicionanio(request, ide):
     for result in RendicionDocumentos.objects.filter(id_rendicionano=ide).values('pk', 'id_rendicionfase__nombre_fase',
                                                                                  'nombre_documento', 'subir_documento',
                                                                                  'nro_descargas').order_by(
-            'id_rendicionano', 'nombre_documento'):
+        'id_rendicionano', 'nombre_documento'):
         documentos[result['id_rendicionfase__nombre_fase']].append(
             {'nombre': result['nombre_documento'], 'documento': result['subir_documento'],
              'nro_descargas': result['nro_descargas'], 'pk': result['pk']})
@@ -329,3 +328,10 @@ def rendicionanio(request, ide):
     ctx = {'iservicios': iservicios, 'menus': menus, 'menu': menu, 'basic': basic, 'cabecera': cabecera,
            'documentos': documentos, 'anios': anios}
     return render(request, 'rendicion_anio.html', ctx)
+
+
+def prueba(request):
+    lista_noticias = Noticia.objects.all()
+    lista_recomendaciones = Noticia.objects.all().order_by('-fechap')[:6]
+    ctx = {'lista_noticias': lista_noticias, 'lista_recomendaciones': lista_recomendaciones}
+    return render(request, 'prueba.html', ctx)
