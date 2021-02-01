@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'image_cropping',
     'geoposition',
+    'import_export',
     'appeea',
 ]
 

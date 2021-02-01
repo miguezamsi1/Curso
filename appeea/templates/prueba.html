@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% load cropping %}
+{% block imgCabecera %}
+    <style>
+        header#head {
+            background-image: url('{{ cabecera.imagen.url }}');
+        }
+    </style>
+{% endblock %}
 {% block contenido %}
     <div class="container-fluid">
         <div class="row">
@@ -17,7 +24,7 @@
                     <tbody>
                     {% for noticia in lista_noticias %}
                         <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
+                            <th scope="row">{{ noticia.pk }}</th>
                             <td>{{ noticia.titulo | slice:20 }}...</td>
                             <td>{{ noticia.estado }}</td>
                             <td>{{ noticia.fechap }}</td>
@@ -25,6 +32,29 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                <p class="text-center">
+                    {% if lista_noticias.has_other_pages %}
+                        <ul class="pagination">
+                            {% if lista_noticias.has_previous %}
+                                <li><a href="?page={{ lista_noticias.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                                <li class="disabled"><span>&laquo;</span></li>
+                            {% endif %}
+                            {% for i in lista_noticias.paginator.page_range %}
+                                {% if lista_noticias.number == i %}
+                                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                {% else %}
+                                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if lista_noticias.has_next %}
+                                <li><a href="?page={{ lista_noticias.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                                <li class="disabled"><span>&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                    {% endif %}
+                </p>
             </div>
             <div class="col-md-3">
                 <h2 class="text-center">ÚLTIMAS NOTICIAS</h2>

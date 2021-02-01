@@ -23,14 +23,14 @@
 {% block imgCabecera %}
     <style>
         header#head {
-            background-image: url("{% for c in cabecera %}{{c.imagen.url}}{%endfor%}") !important;
+            background-image: url("{{cabecera.imagen.url}}") !important;
         }
     </style>
 {% endblock %}
 {% block tituloCabecera %}
 
     <div class="leyenda-header hidden-xs clearfix">
-        <div class="text-right">{% for c in cabecera %}{{ c.titulo }}{% endfor %}</div>
+        <div class="text-right">{{ cabecera.titulo }}</div>
     </div>
 {% endblock %}
 {% block contenido %}

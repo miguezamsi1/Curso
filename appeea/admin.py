@@ -1,6 +1,7 @@
 # vim: set fileencoding=utf-8 :
 from django.contrib import admin
 from image_cropping import ImageCroppingMixin
+from import_export.admin import ImportExportModelAdmin
 
 from . import models
 
@@ -21,7 +22,7 @@ class MenuAdmin(admin.ModelAdmin):
     list_filter = ('habilitado', 'texto_lateral')
 
 
-class CabeceraAdmin(admin.ModelAdmin):
+class CabeceraAdmin(ImportExportModelAdmin):
     list_display = ('id_cabecera', 'titulo', 'imagen')
     search_fields = ('titulo',)
 
@@ -50,7 +51,7 @@ class TagsNoticiaAdmin(admin.ModelAdmin):
     list_display = ('id_tags', 'nombre')
 
 
-class NoticiaAdmin(ImageCroppingMixin, admin.ModelAdmin):
+class NoticiaAdmin(ImageCroppingMixin, ImportExportModelAdmin):
     list_display = (
         'id_noticia',
         'titulo',

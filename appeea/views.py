@@ -30,7 +30,11 @@ def index(request):
     for c in einforma:
         enlace = c.link.split('=')
         elista.append({'link': enlace[1], 'titulo': c.titulo})
-    cabecera = Cabecera.objects.filter(referencia='1').order_by('-pk')[:1]
+    cabecera = ""
+    try:
+        cabecera = Cabecera.objects.get(pk=1)
+    except:
+        cabecera = Cabecera.objects.latest()
     ctx = {'menus': menus, 'menu': menu, 'basic': basic, 'iei': iei, 'iservicios': iservicios, 'noticias': noticias,
            'enterate': enterate, 'informa': lista, 'einforma': elista, 'cabecera': cabecera}
     return render(request, 'index.html', ctx)
@@ -50,7 +54,7 @@ def noticias(request):
         noticias = Noticia.objects.all()
     cabecera = Cabecera.objects.get(referencia='5')
     page = request.GET.get('page', 1)
-    paginator = Paginator(noticias, 6)
+    paginator = Paginator(noticias, 12)
     try:
         noticias = paginator.page(page)
     except PageNotAnInteger:
@@ -333,5 +337,15 @@ def rendicionanio(request, ide):
 def prueba(request):
     lista_noticias = Noticia.objects.all()
     lista_recomendaciones = Noticia.objects.all().order_by('-fechap')[:6]
-    ctx = {'lista_noticias': lista_noticias, 'lista_recomendaciones': lista_recomendaciones}
+    cabecera = Cabecera.objects.get(pk=7)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(lista_noticias, 12)
+    try:
+        lista_noticias = paginator.page(page)
+    except PageNotAnInteger:
+        lista_noticias = paginator.page(1)
+    except EmptyPage:
+        lista_noticias = paginator.page(paginator.num_pages)
+
+    ctx = {'lista_noticias': lista_noticias, 'lista_recomendaciones': lista_recomendaciones, 'cabecera': cabecera}
     return render(request, 'prueba.html', ctx)
