@@ -7,3 +7,4 @@ django-utils2==2.5.0
 easy-thumbnails
 facebook-sdk==3.0.0
 Pillow
+django-import-export
