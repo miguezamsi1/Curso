@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Inicio | Plataforma de Usuarios{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Bienvenido a la plataforma de registro</h1>
+        <p>Registra nuevos usuarios o recupera tu contraseña institucional de forma sencilla.</p>
+        <div class="actions">
+            <a class="btn primary" href="{{ url_for('main.registrar_usuario') }}">Registrar usuario</a>
+            <a class="btn secondary" href="{{ url_for('main.solicitar_recuperacion') }}">Recuperar contraseña</a>
+        </div>
+    </div>
+    <div class="hero-illustration">
+        <img src="https://illustrations.popsy.co/teal/workflow.svg" alt="Usuarios colaborando">
+    </div>
+</section>
+{% endblock %}

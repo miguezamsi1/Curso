@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Restablecer contraseña{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>Define una nueva contraseña</h2>
+    <form method="post" class="form-grid">
+        <label for="contrasena">Nueva contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" placeholder="Nueva contraseña" required>
+
+        <label for="confirmar">Confirmar contraseña</label>
+        <input type="password" id="confirmar" name="confirmar" placeholder="Confirma tu contraseña" required>
+
+        <button type="submit" class="btn primary full">Actualizar contraseña</button>
+    </form>
+</section>
+{% endblock %}

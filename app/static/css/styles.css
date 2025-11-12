@@ -1,0 +1,236 @@
+:root {
+    --celeste-claro: #f0f9ff;
+    --celeste: #48cae4;
+    --celeste-oscuro: #0096c7;
+    --amarillo: #ffd166;
+    --azul-oscuro: #073b4c;
+    --verde: #06d6a0;
+    --blanco: #ffffff;
+    --gris: #edf2f4;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Nunito', Arial, sans-serif;
+    background: linear-gradient(135deg, var(--celeste-claro), var(--blanco));
+    color: var(--azul-oscuro);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    width: min(960px, 92%);
+    margin: 0 auto;
+}
+
+.navbar {
+    background: var(--blanco);
+    border-bottom: 3px solid var(--amarillo);
+    box-shadow: 0 8px 20px rgba(17, 138, 178, 0.08);
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+}
+
+.brand {
+    font-weight: 700;
+    color: var(--celeste-oscuro);
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.nav-links a {
+    margin-left: 1rem;
+    color: var(--azul-oscuro);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--celeste-oscuro);
+}
+
+main.container {
+    flex: 1;
+    padding: 2rem 0 3rem;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    align-items: center;
+    margin-top: 2rem;
+    background: var(--blanco);
+    padding: 2rem;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(17, 138, 178, 0.12);
+    border: 2px solid rgba(72, 202, 228, 0.2);
+}
+
+.hero-content h1 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 1rem;
+    color: var(--azul-oscuro);
+}
+
+.hero-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.hero-illustration img {
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    margin: 0 auto;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.btn {
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn.primary {
+    background: var(--celeste-oscuro);
+    color: var(--blanco);
+    box-shadow: 0 10px 25px rgba(0, 150, 199, 0.25);
+}
+
+.btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0, 150, 199, 0.3);
+}
+
+.btn.secondary {
+    background: var(--blanco);
+    color: var(--celeste-oscuro);
+    border: 2px solid var(--celeste-oscuro);
+}
+
+.btn.secondary:hover {
+    transform: translateY(-2px);
+}
+
+.btn.full {
+    width: 100%;
+}
+
+.card {
+    background: var(--blanco);
+    padding: 2.5rem;
+    border-radius: 18px;
+    box-shadow: 0 16px 40px rgba(7, 59, 76, 0.12);
+    border-top: 6px solid var(--amarillo);
+    margin-top: 2rem;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: var(--celeste-oscuro);
+    font-size: 1.8rem;
+}
+
+.form-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+label {
+    font-weight: 600;
+    color: var(--azul-oscuro);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 2px solid rgba(17, 138, 178, 0.2);
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--celeste-oscuro);
+    box-shadow: 0 0 0 4px rgba(72, 202, 228, 0.2);
+}
+
+.alerts {
+    margin-bottom: 1rem;
+}
+
+.alert {
+    padding: 0.9rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+}
+
+.alert-success {
+    background: rgba(6, 214, 160, 0.15);
+    color: var(--verde);
+}
+
+.alert-warning {
+    background: rgba(255, 209, 102, 0.2);
+    color: #c15b00;
+}
+
+.alert-danger {
+    background: rgba(255, 107, 107, 0.18);
+    color: #d62828;
+}
+
+.alert-info {
+    background: rgba(72, 202, 228, 0.18);
+    color: var(--celeste-oscuro);
+}
+
+.footer {
+    background: var(--azul-oscuro);
+    color: var(--blanco);
+    padding: 1rem 0;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .navbar .container {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .card {
+        padding: 1.75rem;
+    }
+}
