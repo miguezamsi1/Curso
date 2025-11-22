@@ -4,17 +4,17 @@
 {% block metadatos %}
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Empresa Eléctrica Azogues."/>
-    <meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica."/>
+    <meta name="description" content="Empresa Eléctrica Azogues C.A."/>
+    <meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica., Azogues, planillas. consumo"/>
 
     <link rel="shortcut icon" href="images/logo.png"/>
     <!-- Facebook and Twitter integration -->
-    <meta property="og:title" content="Empresa Eléctrica Azogues"/>
+    <meta property="og:title" content="Empresa Eléctrica Azogues C.A."/>
     <meta property="og:image" content="images/slider/ventilador.png"/>
     <meta property="og:url" content="https://eea.gob.ec/"/>
-    <meta property="og:site_name" content="Empresa Eléctrica Azogues"/>
+    <meta property="og:site_name" content="Empresa Eléctrica Azogues C.A."/>
     <meta property="og:description"
-          content="La empresa eléctrica de Azogues."/>
+          content="La Empresa Eléctrica Azogues C.A."/>
     <meta name="twitter:title" content="Empresa Eléctrica Azogues"/>
     <meta name="twitter:image" content="images/slider/ventilador.png"/>
     <meta name="twitter:url" content=""/>
@@ -24,6 +24,93 @@
     <style>
         header#head {
             background-image: url("{{cabecera.imagen.url}}") !important;
+        }
+        
+        /* Aumentar la altura del carousel de noticias */
+        #slides .carousel,
+        #slides .carousel-inner,
+        #slides .carousel-inner .item {
+            height: 550px !important;
+            min-height: 550px !important;
+            max-height: 550px !important;
+        }
+        
+        #slides .carousel-inner .item img {
+            height: auto !important;
+            max-height: 550px !important;
+            object-fit: contain;
+            width: 100%;
+        }
+        
+        /* Ajustar posición del título de la noticia - FORZAR que se quede abajo */
+        #main-carousel .carousel-caption {
+            bottom:100px !important;
+            top: auto !important;
+            position: absolute !important;
+            left: 0px !important;
+            right: 0px !important;
+        }
+        
+        /* Ajustar posición de los indicadores ENCIMA del carousel */
+        #slides .carousel-indicators {
+            position: absolute !important;
+            bottom: 80px !important;
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            left: 50% !important;
+            right: 0px !important;
+            transform: translateX(-50%) !important;
+        }
+        
+        #slides .carousel-indicators li {
+            position: relative !important;
+        }
+        
+        /* Reducir espacio después de la sección de noticias */
+        #slides {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+        
+        /* Reducir espacio antes de servicios en línea */
+        #servicios-destacados {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+        
+        /* Reducir espacios en secciones laterales */
+        #banners, #videos, #contacto-gob {
+            margin-bottom: 5px !important;
+            padding-bottom: 0 !important;
+        }
+        
+        .bloque {
+            margin-bottom: 5px !important;
+        }
+        
+        /* Reducir espacio entre filas */
+        .container-fluid > .row {
+            margin-bottom: 0 !important;
+        }
+        
+        /* Forzar que la segunda fila empiece justo después de la primera columna de 6 */
+        .container-fluid > .row:nth-child(2) {
+            position: relative;
+            top: -70px;
+            z-index: 10;
+            margin-bottom: -70px !important;
+        }
+        
+        /* Eliminar compensación negativa en la tercera fila */
+        .container-fluid > .row:nth-child(3) {
+            margin-top: 0 !important;
+        }
+        
+        
+        /* Reducir espacio en aside */
+        aside {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
         }
     </style>
 {% endblock %}
@@ -84,29 +171,6 @@
                                     <a><em>{{ c.titulo }}</em></a></li>
                             {% endfor %}
                         </ol>
-                    </div>
-                </section>
-                <section id="programas">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <h2 class="importante">Servicios <br><br>en línea</h2>
-                        </div>
-                        <div class="col-md-10">
-                            <div id="nav-programas" class="crsl-nav">
-                                <span class="buttons previous ico-programas-left"></span>
-                                <span class="buttons next ico-programas-right"></span>
-                            </div>
-                            <div class="viewport">
-                                <div class="crsl-programas" data-navigation="nav-programas">
-                                    <div class="crsl-wrap">
-                                        {% for c in iservicios %}
-                                            <a target="_blank" href="{{ c.url }}" class='menu-image-title-after'><i
-                                                    class="_mi _before dashicons {{ c.icono }}"></i>{{ c.titulo }}</a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </section>
             </div>
@@ -175,11 +239,54 @@
 
             </aside>
         </div>
-        <hr>
-        <br>
         <div class="row">
             <div class="col-md-9">
-                <div id="map"></div>
+                <section id="servicios-destacados">
+                    <h2 class="importante" style="margin-bottom: 20px;">Servicios en línea</h2>
+                    <div id="servicios-carousel" class="carousel slide" data-ride="carousel" data-interval="8000">
+                        <div class="carousel-inner">
+                            {% for c in iservicios %}
+                                {% if forloop.counter0|divisibleby:6 or forloop.first %}
+                                    <div class="item {% if forloop.first %}active{% endif %}">
+                                        <div class="row">
+                                {% endif %}
+                                            <div class="col-md-2 col-sm-4 col-xs-6">
+                                                <div class="servicio-card">
+                                                    <a target="_blank" href="{{ c.url }}">
+                                                        <div class="servicio-icon">
+                                                            <i class="dashicons {{ c.icono }}"></i>
+                                                        </div>
+                                                        <div class="servicio-titulo">
+                                                            <h4>{{ c.titulo }}</h4>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                {% if forloop.counter|divisibleby:6 or forloop.last %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <!-- Controles -->
+                        <a class="left carousel-control" href="#servicios-carousel" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">Anterior</span>
+                        </a>
+                        <a class="right carousel-control" href="#servicios-carousel" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">Siguiente</span>
+                        </a>
+                        <!-- Indicadores -->
+                        <ol class="carousel-indicators">
+                            {% for c in iservicios %}
+                                {% if forloop.counter0|divisibleby:6 or forloop.first %}
+                                    <li data-target="#servicios-carousel" data-slide-to="{{ forloop.counter0|divisibleby:6|yesno:'0,1,2,3,4,5' }}" class="{% if forloop.first %}active{% endif %}"></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </section>
             </div>
             <div class="col-md-3">
                 <div id="videos" class="bloque">
@@ -188,8 +295,6 @@
                         <div class="carousel-inner" role="listbox">
                             {% for c in informa %}
                                 <div class="item {% if forloop.counter0 == 0 %}active{% endif %}">
-                                    <!-- https://www.youtube.com/embed/Bn__rsOcxFQ?rel=0&amp;showinfo=0&amp;enablejsapi=1 -->
-                                    <!-- 1 :: Bn__rsOcxFQ -->
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <div id="player{{ forloop.counter }}">
                                         </div>
@@ -200,8 +305,7 @@
                         <ol class="carousel-indicators">
                             {% for c in informa %}
                                 <li data-target="#videos-carousell" data-slide-to="{{ forloop.counter0 }}"
-                                    class="{% if forloop.counter0 == 0 %}active{% endif %}"><a href="#ginforma"><em>video
-                                    1</em></a></li>
+                                    class="{% if forloop.counter0 == 0 %}active{% endif %}"><a href="#ginforma"><em>video 1</em></a></li>
                             {% endfor %}
                         </ol>
                     </div>
@@ -210,6 +314,98 @@
         </div>
     </div>
     <style>
+        /* Estilos para las tarjetas de servicios */
+        #servicios-destacados {
+            padding: 10px 0 50px 0;
+        }
+        
+        .servicio-card {
+            background: linear-gradient(135deg, #5B9BD5 0%, #4682B4 100%);
+            border-radius: 10px;
+            padding: 15px 10px;
+            margin: 5px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #6AADE4 0%, #5A9BD5 100%);
+        }
+        
+        .servicio-card a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            width: 100%;
+        }
+        
+        .servicio-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .servicio-icon i {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .servicio-card:hover .servicio-icon i {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+        
+        .servicio-titulo h4 {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        #servicios-carousel .carousel-control {
+            background: none;
+            width: 5%;
+        }
+        
+        #servicios-carousel .carousel-control.left,
+        #servicios-carousel .carousel-control.right {
+            background-image: none;
+            filter: none;
+        }
+        
+        #servicios-carousel .glyphicon {
+            font-size: 40px;
+            color: #f4c430;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        #servicios-carousel .glyphicon:hover {
+            color: #d4a520;
+        }
+        
+        #servicios-carousel .carousel-indicators li {
+            background-color: #2c5f7d;
+            border: 1px solid #2c5f7d;
+        }
+        
+        #servicios-carousel .carousel-indicators .active {
+            background-color: #1a3f5a;
+        }
+        
         /* Always set the map height explicitly to define the size of the div
          * element that contains the map. */
         #map {
@@ -262,29 +458,6 @@
 
         }
     </script>
-    <script>
-        var map;
-        // var lat = {{basic.mapa.longitude}};
-        var str_lat = "{{basic.mapa.latitude}}";
-        var str_lon = "{{basic.mapa.longitude}}";
-        var lat = parseFloat(str_lat.replace(",", "."));
-        var lon = parseFloat(str_lon.replace(",", "."));
-        var myLatLng = {lat: lat, lng: lon}
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: lat, lng: lon},
-                zoom: {{basic.zoom}}
-            });
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                title: '{{basic.nombre_marcador}}'
-            });
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-dah7HhysKLNNjPnC8Qlt27l6JJzLsY&callback=initMap"
-            async defer></script>
 
     {% if basic.popup_habilitar %}
         <script type="text/javascript">

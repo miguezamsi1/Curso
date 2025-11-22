@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from __future__ import unicode_literals
 
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import *
-from django.db.models import *
-from django.utils.encoding import python_2_unicode_compatible
 from geoposition.fields import GeopositionField
 from image_cropping import ImageRatioField
 
 
-@python_2_unicode_compatible
 class Menu(models.Model):
     id_tags = models.AutoField(primary_key=True)
     habilitado = models.BooleanField(verbose_name="Habilitar el Menú")
@@ -31,7 +27,6 @@ class Menu(models.Model):
         return u'%s' % self.nombre_menu
 
 
-@python_2_unicode_compatible
 class TagsNoticia(models.Model):
     id_tags = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=200)
@@ -45,7 +40,6 @@ class TagsNoticia(models.Model):
         return u'%s' % self.nombre
 
 
-@python_2_unicode_compatible
 class Noticia(models.Model):
     id_noticia = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -66,7 +60,6 @@ class Noticia(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class ProgramasServicios(models.Model):
     id_programasservicios = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -83,7 +76,6 @@ class ProgramasServicios(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class Enterate(models.Model):
     id_enterate = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -101,7 +93,6 @@ class Enterate(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class Informa(models.Model):
     id_informa = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -117,7 +108,6 @@ class Informa(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class EmpresaInforma(models.Model):
     id_informa = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -133,7 +123,6 @@ class EmpresaInforma(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class Institucion(models.Model):
     id_institucion = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -155,7 +144,6 @@ class Institucion(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class Servicios(models.Model):
     id_institucion = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -177,7 +165,6 @@ class Servicios(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class Cabecera(models.Model):
     id_cabecera = models.AutoField(primary_key=True)
     paginas_select = (
@@ -196,7 +183,6 @@ class Cabecera(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class IndexGeneral(models.Model):
     id_indexgeneral = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
@@ -223,7 +209,6 @@ class IndexGeneral(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class IndexEnlacesInteres(models.Model):
     id_enlacesinteres = models.AutoField(primary_key=True)
     estado = models.BooleanField(verbose_name="Publicar este item")
@@ -240,7 +225,6 @@ class IndexEnlacesInteres(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class IndexServicios(models.Model):
     id_serviciosindex = models.AutoField(primary_key=True)
     icono = models.CharField(max_length=100)
@@ -257,7 +241,6 @@ class IndexServicios(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class transparencia_ano(models.Model):
     id_transparenciaano = models.AutoField(primary_key=True)
     nombre_ano = models.CharField(max_length=50)
@@ -272,7 +255,6 @@ class transparencia_ano(models.Model):
         return u'%s' % self.nombre_ano
 
 
-@python_2_unicode_compatible
 class transparencia_mes(models.Model):
     id_transparenciames = models.AutoField(primary_key=True)
     nombre_mes = models.CharField(max_length=50)
@@ -286,7 +268,6 @@ class transparencia_mes(models.Model):
         return u'%s' % self.nombre_mes
 
 
-@python_2_unicode_compatible
 class transparencia_documentos(models.Model):
     id_tags = models.AutoField(primary_key=True)
     nombre_documento = models.CharField(max_length=200)
@@ -304,7 +285,6 @@ class transparencia_documentos(models.Model):
         return u'%s' % self.nombre_documento
 
 
-@python_2_unicode_compatible
 class ProcesosContratacionNivel1(models.Model):
     id_procesos = models.AutoField(primary_key=True)
     paginas_select = (('1', 'menú'), ('2', 'submenú'))
@@ -321,7 +301,6 @@ class ProcesosContratacionNivel1(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class ProcesosContratacionNivel2(models.Model):
     id_procesos2 = models.AutoField(primary_key=True)
     paginas_select = (('1', 'menú'), ('2', 'submenú'))
@@ -339,7 +318,6 @@ class ProcesosContratacionNivel2(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class ProcesosContratacionNivel3(models.Model):
     id_procesos3 = models.AutoField(primary_key=True)
     paginas_select = (('1', 'menú'), ('2', 'submenú'))
@@ -357,7 +335,6 @@ class ProcesosContratacionNivel3(models.Model):
         return u'%s' % self.titulo
 
 
-@python_2_unicode_compatible
 class RendicionAno(models.Model):
     id_rendicionano = models.AutoField(primary_key=True)
     nombre_ano = models.CharField(max_length=50)
@@ -372,7 +349,6 @@ class RendicionAno(models.Model):
         return u'%s' % self.nombre_ano
 
 
-@python_2_unicode_compatible
 class RendicionFase(models.Model):
     id_rendicionfase = models.AutoField(primary_key=True)
     nombre_fase = models.CharField(max_length=50)
@@ -386,11 +362,10 @@ class RendicionFase(models.Model):
         return u'%s' % self.nombre_fase
 
 
-@python_2_unicode_compatible
 class RendicionDocumentos(models.Model):
     id_tags = models.AutoField(primary_key=True)
-    nombre_documento = models.CharField(max_length=200)
-    subir_documento = models.FileField(max_length=200)
+    nombre_documento = models.CharField(max_length=150)
+    subir_documento = models.FileField(max_length=8000,  upload_to="media/rendicion_documentos")
     nro_descargas = models.IntegerField()
     id_rendicionano = models.ForeignKey(RendicionAno, models.DO_NOTHING, db_column='id_rendicionano')
     id_rendicionfase = models.ForeignKey(RendicionFase, models.DO_NOTHING, db_column='id_rendicionfase')
@@ -405,9 +380,15 @@ class RendicionDocumentos(models.Model):
 
 
 class Reclamos(models.Model):
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
     email = models.EmailField(max_length=100)
     reclamo = models.TextField(max_length=100)
+
+    class Meta:
+        db_table = 'reclamos'
+        verbose_name = 'Reclamo'
+        verbose_name_plural = 'Reclamos'
 
     def __str__(self):
         return u'%s' % self.nombre

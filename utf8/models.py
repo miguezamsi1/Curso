@@ -100,8 +100,7 @@ class Enterate(models.Model):
 class Informa(models.Model):
     id_informa = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
-    link = models.CharField(max_length=300)
-    publicado = models.BooleanField(verbose_name="Publicar este item")
+    link =python manage.py runserver 192.168.42.170:80
    
     class Meta:
         db_table = 'informa'

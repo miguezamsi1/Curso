@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'logo';
     src:
-        path('../fonts/logo/fonts/logo0b2a.ttf') format('truetype'),
-        path('../fonts/logo/fonts/logo0b2a.woff') format('woff'),
-        path('../fonts/logo/fonts/logo0b2a.svg') format('svg');
+        url('../fonts/logo/fonts/logo0b2a.ttf') format('truetype'),
+        url('../fonts/logo/fonts/logo0b2a.woff') format('woff'),
+        url('../fonts/logo/fonts/logo0b2a.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }

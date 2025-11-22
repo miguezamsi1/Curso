@@ -8,11 +8,11 @@
 }
 
 .download-info .download-button {
-	background: path(downloadbutton.gif) no-repeat top left;
+	background: url(downloadbutton.gif) no-repeat top left;
 }
 
 .download-info .more-button {
-	background: path(morebutton.gif) no-repeat top left;
+	background: url(morebutton.gif) no-repeat top left;
 }
 
 form#download-page-search {

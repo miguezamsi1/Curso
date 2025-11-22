@@ -2,6 +2,7 @@
 {% load static %}
 {% load cropping %}
 {% block metadatos %}
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="{{noticias.descripcion}}" />
 	<meta name="keywords" content="Empresa eléctrica, empresa eléctrica azogues, empresa eléctrica." />
@@ -10,12 +11,104 @@
 	<meta property="og:title" content="{{noticias.titulo}}" />
 	<meta property="og:image" content="{{noticias.imagen.url}}" />
 	<meta property="og:url" content="http//eea.gob.ec{{request.get_full_path}}" />
-	<meta property="og:site_name" content="Empresa Eléctrica Azogues" />
+	<meta property="og:site_name" content="Empresa Eléctrica Azogues C.A." />
 	<meta property="og:description" content="{{noticias.descripcion}}" />
 	<meta name="twitter:title" content="{{noticias.titulo}}" />
 	<meta name="twitter:image" content="{{noticias.imagen.url}}" />
 	<meta name="twitter:url" content="" />
 	<meta name="twitter:card" content="sumary" />
+
+{% endblock %}
+
+{% block imgCabecera %}
+  <style>
+    header#head {
+      background-image: url("{{ cabecera.imagen.url }}");
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <h1 style="text-align: center; color: #3399ff; font-family: Arial, sans-serif; font-weight: bold;">
+  SERVICIOS DE LA EMPRESA ELÉCTRICA AZOGUES C.A.
+</h1>
+  <div class="servicios-grid">
+    <a href="https://www.eea.gob.ec/servicios/2/nuevo-servicio/" class="servicio-box">
+      <img src="/static/iconos/a_001 Nuevo_Servicio.png" alt="Nuevo Servicio">
+      <span>Instalación de nuevo servicio de energía eléctrica</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/3/reubicacion-del-medidor/" class="servicio-box">
+      <img src="/static/iconos/a_002_ReubicacionMedidor.png" alt="Reubicación de Medidor">
+     <span>Reubicación Medidor</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/11/cambio-de-medidor-o-acometida/" class="servicio-box">
+      <img src="/static/iconos/a_003_CambioMedidor.png" alt="Cambio de Medidor">
+      <span>Cambio de medidor y/o acometida</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/6/desconexion-definitiva-del-servicio-electrico/" class="servicio-box">
+      <img src="/static/iconos/a_004_DesconexionServicio.png" alt="Desconexion del Servicio">
+      <span>Desconexión del servicio de energía eléctrica</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/16/Otorgamiento-de-subsidio-para-grupo-prioritario-de-discapacidad/" class="servicio-box">
+      <img src="/static/iconos/a_005_Discapacidad.png" alt="Discapacidad">
+      <span>Otorgamiento de subsidio para grupo prioritario de discapacidad</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/15/Otorgamiento-de-subsidio-para-grupo-prioritario-de-tercera-edad/" class="servicio-box">
+      <img src="/static/iconos/a_006_TerceraEdad.png" alt="Tercera Edad">
+      <span>Otorgamiento de subsidio para grupo prioritario de tercera edad</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/12/cambio-de-tarifa/" class="servicio-box">
+      <img src="/static/iconos/a_007_CambioTarifa.png" alt="Cambio de tarifa">
+      <span>Cambio de tarifa</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/5/Instalacion-del-servicio-ocasional-de-energia-electrica/" class="servicio-box">
+      <img src="/static/iconos/a_008_ServicioOcacional.png" alt="Servicio Ocasional">
+      <span>Instalación del servicio ocasional de energía eléctrica</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/4/cambio-de-nombre/" class="servicio-box">
+      <img src="/static/iconos/a_009_ModificacionTitular.png" alt="Modificacion Titular">
+      <span>Modificación de titularidad del servicio</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/23/atencion-de-reclamos/" class="servicio-box">
+      <img src="/static/iconos/a_010_AtencionReclamos.png" alt="Atencion de reclamos">
+      <span>Atención de reclamos</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/8/aprobacion-de-disenos-electricos/" class="servicio-box">
+      <img src="/static/iconos/a_011_AprobacionDiseños.png" alt="Aprobación de diseños">
+      <span>Aprobación de diseños eléctricos</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/24/atencion-de-consultas/" class="servicio-box">
+      <img src="/static/iconos/a_012_AtencionConsultas.png" alt="Atención de Consultas">
+      <span>Atención de consultas</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/26/Provision-de-informacion-GIS" class="servicio-box">
+      <img src="/static/iconos/a_013_GIS.png" alt="Información Geoespacial (GIS)">
+      <span>Provisión de información geoespacial (GIS)</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/25/Instalacion-de-sistemas-de-alumbrado-publico" class="servicio-box">
+      <img src="/static/iconos/a_014_AlumbradoPublico.png" alt="Alumbrado Público">
+      <span>Instalación de sistemas de alumbrado público</span>
+    </a>
+    <a href="https://www.eea.gob.ec/servicios/27/Arrendamiento-de-estructuras-para-telecomunicaciones" class="servicio-box">
+      <img src="/static/iconos/a_015_ArrendamientoEstructuras.png" alt="Arendamiento estructuras">
+      <span>Arrendamiento de estructuras para telecomunicaciones</span>
+    </a>
+  </div>
+
+  <div style="text-align: center; margin: 30px 0;">
+    <a href="https://www.eea.gob.ec/">
+      <button class="boton-salir" style="padding: 10px 20px; font-size: 14px; cursor: pointer;">REGRESAR A LA PÁGINA PRINCIPAL</button>
+    </a>
+  </div>
+{% endblock %}
+
+
+
+
+
+
+
+
 	<style>
 		#cssmenu,
 #cssmenu ul,
@@ -76,6 +169,7 @@
 #cssmenu > ul > li:last-child > a,
 #cssmenu > ul > li.last > a {
   /*border-bottom: 1px solid #1682ba;*/
+  border-bottom: 0;
 }
 .holder {
   width: 0;
@@ -126,7 +220,7 @@ cursor: pointer;
   z-index: 1;
   text-decoration: none;
   font-size: 13px;
-  //color: #5A5959;
+  /* color: #5A5959; */
   color: #00405a;
   background: #F8F8F8 !important;
   border-bottom: 1px solid #E0DFDF;
@@ -186,37 +280,7 @@ cursor: pointer;
   border-color: #ffffff;
 }
 	</style>
-{% endblock %}
-{% block imgCabecera %}
-  <style>
-    header#head {
-      background-image: path({{cabecera.imagen.url}});
-    }
-  </style>
-  {% endblock %}
-{%block tituloCabecera%}
-          <div class="leyenda-header hidden-xs clearfix">
-            <div class="text-right">{{cabecera.titulo}}</div>
-          </div>
-{% endblock%}
-{% block contenido %}
 
-<div class="container-fluid color fucsia">
-  <div class="row">
-    <div class="col-md-4">
-      <h3 class="text-center"><strong>Servicios</strong></h3>
-      <img src="{% static 'servicios.png' %}" width="80%" height="auto" class="imagen-ho" alt="">
-    </div>
-    <div class="col-md-8">
-      <div id="cssmenu" class="menu-agenciasv30-container">
-        <br>
-        <ul id="menu-agenciasv30" class="menu">
-          {% for c in servicios %}
-            <li id="menu-item-475" class="menu-item menu-item-type-post_type menu-item-object-post"><a href="{% url 'servicios_individual' c.pk c.titulo|slugify %}" class="menu-image-title-after"><span class="menu-image-title">{{c.titulo}}</span></a></li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
+
+
+

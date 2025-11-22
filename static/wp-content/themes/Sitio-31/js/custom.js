@@ -307,6 +307,7 @@
 
 
         $("#programas .crsl-programas a").wrap("<div class='crsl-item'></div>");
+        $("#programas-segunda .crsl-programas-segunda a").wrap("<div class='crsl-item'></div>");
 
         $('.scroll ul a').on('click', function (e) {
             if ($('.scroll ul a.active').length) {
@@ -338,6 +339,12 @@
             }
         });
         $('.crsl-programas').responsiveCarousel({
+            visible: 5,
+            itemMinWidth: 106,
+            itemMargin: 2,
+            itemEqualHeight: true
+        });
+        $('.crsl-programas-segunda').responsiveCarousel({
             visible: 5,
             itemMinWidth: 106,
             itemMargin: 2,

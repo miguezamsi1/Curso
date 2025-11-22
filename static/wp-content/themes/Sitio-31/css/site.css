@@ -1153,7 +1153,7 @@ span.ico{
 ================================================== */
 footer#footer-bot .container-fluid,
 .sidebar{
-    background-image: path(../img/colores.png);
+    background-image: url(../img/colores.png);
     background-position: center bottom;
     background-repeat: no-repeat;
     background-size: 100% 5px ;

@@ -2,7 +2,6 @@
 from django.contrib import admin
 from image_cropping import ImageCroppingMixin
 from import_export.admin import ImportExportModelAdmin
-
 from . import models
 
 admin.site.site_title = "Empresa Eléctrica Azogues C.A."
