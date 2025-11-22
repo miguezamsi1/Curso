@@ -1,6 +1,14 @@
 # Sistema Web Institucional EEA
 
-Página web institucional desarrollada en Django para la Empresa Eléctrica Ambato (EEA).
+Página web institucional desarrollada en Django para la Empresa Eléctrica Azogues (EEA).
+
+## 📌 Información del Proyecto
+
+- **Versión actual:** 1.0.0
+- **Última actualización:** Noviembre 2025
+- **Framework:** Django
+- **Base de datos:** SQLite (desarrollo) / PostgreSQL (producción)
+- **Repositorio:** https://github.com/miguezamsi1/Curso
 
 ## 📋 Requisitos Previos
 
