@@ -6,15 +6,19 @@ Sistema de autenticación corporativo EEA
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.hashers import make_password, check_password
 from datetime import timedelta
 import random
 import string
+import logging
 
 from .models import UsuarioRegistrado, CodigoVerificacion, EventoSeguridad
+
+# Logger para emails
+logger = logging.getLogger('django.core.mail')
 
 
 def get_client_ip(request):
@@ -33,32 +37,484 @@ def generar_codigo_verificacion():
 
 
 def enviar_email_verificacion(email, codigo, nombres):
-    """Envía email con código de verificación"""
-    asunto = 'Código de Verificación - EEA'
-    mensaje = f"""
+    """Envía email con código de verificación en formato HTML profesional"""
+    subject = 'CORREO EMPRESA ELECTRICA AZOGUES C.A.'
+    from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', settings.EMAIL_HOST_USER)
+    
+    # Versión texto plano (fallback)
+    text_content = f"""
     Estimado/a {nombres},
+    
+    Ha solicitado un código de verificación para acceder al sistema de la Empresa Eléctrica Azogues.
     
     Su código de verificación es: {codigo}
     
-    Este código es válido por 15 minutos.
+    ⏰ IMPORTANTE: Este código es válido por 15 minutos.
     
     Si usted no solicitó este código, por favor ignore este mensaje.
     
     Atentamente,
     Empresa Eléctrica Azogues
+    
+    ---
+    Este es un correo automático, por favor no responder.
+    © 2025 Empresa Eléctrica Azogues - Todos los derechos reservados
+    """
+    
+    # Versión HTML (mejorada)
+    html_content = f"""
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Código de Verificación - EEA</title>
+        <style>
+            body {{ 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                line-height: 1.6; 
+                color: #333; 
+                background: #f5f5f5;
+                margin: 0;
+                padding: 0;
+            }}
+            .email-wrapper {{
+                width: 100%;
+                background: #f5f5f5;
+                padding: 40px 20px;
+            }}
+            .container {{ 
+                max-width: 600px; 
+                margin: 0 auto; 
+                background-color: #ffffff;
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }}
+            .header {{ 
+                background: linear-gradient(135deg, #0066cc 0%, #00b4d8 50%, #40a9ff 100%);
+                color: white; 
+                padding: 50px 30px; 
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }}
+            .header::before {{
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+                animation: pulse 4s ease-in-out infinite;
+            }}
+            @keyframes pulse {{
+                0%, 100% {{ transform: scale(1); opacity: 0.5; }}
+                50% {{ transform: scale(1.1); opacity: 0.8; }}
+            }}
+            .header-icon {{
+                font-size: 64px;
+                margin-bottom: 15px;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                animation: glow 2s ease-in-out infinite;
+            }}
+            @keyframes glow {{
+                0%, 100% {{ text-shadow: 0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3); }}
+                50% {{ text-shadow: 0 0 20px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5); }}
+            }}
+            .header h1 {{
+                margin: 0;
+                font-size: 28px;
+                font-weight: bold;
+                position: relative;
+                z-index: 1;
+                text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            }}
+            .header p {{
+                margin: 10px 0 0 0;
+                font-size: 16px;
+                opacity: 0.95;
+                position: relative;
+                z-index: 1;
+                font-weight: 500;
+            }}
+            .header-divider {{
+                height: 4px;
+                background: linear-gradient(90deg, transparent 0%, #ffffff 50%, transparent 100%);
+                margin-top: 20px;
+            }}
+            .content {{ 
+                background: #ffffff; 
+                padding: 40px 30px;
+            }}
+            .greeting {{
+                font-size: 18px;
+                margin-bottom: 20px;
+                color: #0066cc;
+                font-weight: 600;
+            }}
+            .codigo {{ 
+                background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+                border: 3px solid #2196f3; 
+                padding: 30px; 
+                text-align: center; 
+                margin: 30px 0; 
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+            }}
+            .codigo-label {{
+                margin: 0 0 15px 0; 
+                color: #1976d2; 
+                font-size: 15px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                font-weight: 700;
+            }}
+            .codigo-numero {{ 
+                font-size: 42px; 
+                font-weight: bold; 
+                color: #0d47a1; 
+                letter-spacing: 10px;
+                font-family: 'Courier New', monospace;
+                text-shadow: 2px 2px 4px rgba(13, 71, 161, 0.2);
+            }}
+            .warning {{ 
+                background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+                border-left: 5px solid #ff9800; 
+                padding: 20px 25px; 
+                margin: 25px 0;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(255, 152, 0, 0.1);
+            }}
+            .warning strong {{
+                color: #e65100;
+                font-size: 16px;
+            }}
+            .info-box {{
+                background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+                border-left: 5px solid #4caf50;
+                padding: 15px 20px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }}
+            .footer {{ 
+                background: linear-gradient(135deg, #0066cc 0%, #00b4d8 100%);
+                padding: 30px 20px; 
+                text-align: center; 
+                color: white;
+            }}
+            .footer p {{
+                margin: 8px 0;
+                font-size: 13px;
+            }}
+            .footer strong {{
+                font-size: 14px;
+            }}
+            .footer-contact {{
+                margin-top: 15px;
+                padding-top: 15px;
+                border-top: 1px solid rgba(255,255,255,0.3);
+                font-size: 12px;
+                opacity: 0.9;
+            }}
+            .signature {{
+                margin-top: 35px;
+                padding-top: 25px;
+                border-top: 2px solid #e0e0e0;
+                text-align: center;
+            }}
+            .signature p {{
+                margin: 5px 0;
+                line-height: 1.8;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="email-wrapper">
+            <div class="container">
+                <div class="header">
+                    <div class="header-icon">
+                        <img src="cid:logo_eea" alt="EEA Logo" style="width: 80px; height: 80px; margin-bottom: 10px; border-radius: 50%; background: white; padding: 5px;">
+                    </div>
+                    <h1>EMPRESA ELÉCTRICA AZOGUES C.A.</h1>
+                    <p>Sistema de Verificación de Usuarios</p>
+                    <div class="header-divider"></div>
+                </div>
+                <div class="content">
+                    <p class="greeting">Estimado/a {nombres},</p>
+                    <p style="font-size: 16px; color: #555;">
+                        Ha solicitado un código de verificación para acceder al sistema de la 
+                        <strong>Empresa Eléctrica Azogues</strong>.
+                    </p>
+                    
+                    <div class="codigo">
+                        <p class="codigo-label">🔐 Su código de verificación es:</p>
+                        <div class="codigo-numero">{codigo}</div>
+                    </div>
+                    
+                    <div class="warning">
+                        <strong>⏰ Importante:</strong> Este código es válido por <strong>15 minutos</strong>. 
+                        Por seguridad, no comparta este código con nadie.
+                    </div>
+                    
+                    <div class="info-box">
+                        <strong>✓ Consejo de Seguridad:</strong> Nunca comparta su código de verificación 
+                        con terceros. La Empresa Eléctrica Azogues nunca le solicitará este código por teléfono o correo.
+                    </div>
+                    
+                    <p style="margin-top: 25px; font-size: 15px; color: #666;">
+                        Si usted no solicitó este código, por favor ignore este mensaje o 
+                        contacte inmediatamente con el departamento de sistemas.
+                    </p>
+                    
+                    <div class="signature">
+                        <p style="font-size: 16px; color: #0066cc; font-weight: 600;">
+                            Atentamente,
+                        </p>
+                        <p style="font-size: 18px; color: #0d47a1; font-weight: bold;">
+                            Empresa Eléctrica Azogues C.A.
+                        </p>
+                        <p style="font-size: 14px; color: #666;">
+                            Jefatura de Sistemas
+                        </p>
+                    </div>
+                </div>
+                <div class="footer">
+                    <p><strong>📧 Este es un correo automático, por favor no responder</strong></p>
+                    <p style="font-size: 14px; margin-top: 10px;">
+                        © 2025 Empresa Eléctrica Azogues C.A. - Todos los derechos reservados
+                    </p>
+                    <div class="footer-contact">
+                        <p>¿Necesita ayuda? Contacte a: <strong>info@eea.gob.ec</strong></p>
+                        <p>📞 Teléfono: (07) 2240377 | 🌐 www.eea.gob.ec</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
     """
     
     try:
-        send_mail(
-            asunto,
-            mensaje,
-            settings.EMAIL_HOST_USER,
-            [email],
-            fail_silently=False,
+        # Crear mensaje con alternativas (texto plano + HTML)
+        email_msg = EmailMultiAlternatives(
+            subject=subject,
+            body=text_content,
+            from_email=from_email,
+            to=[email]
         )
+        email_msg.attach_alternative(html_content, "text/html")
+        
+        # Adjuntar logo como imagen embebida
+        import os
+        from email.mime.image import MIMEImage
+        
+        logo_path = os.path.join(settings.BASE_DIR, 'media', 'logo', 'circulo.png')
+        if os.path.exists(logo_path):
+            with open(logo_path, 'rb') as f:
+                logo_data = f.read()
+                logo_image = MIMEImage(logo_data)
+                logo_image.add_header('Content-ID', '<logo_eea>')
+                logo_image.add_header('Content-Disposition', 'inline', filename='logo.png')
+                email_msg.attach(logo_image)
+        
+        # Enviar
+        email_msg.send(fail_silently=False)
+        
+        logger.info(f"Email de verificación enviado exitosamente a {email}")
         return True
+        
     except Exception as e:
-        print(f"Error enviando email: {e}")
+        logger.error(f"Error enviando email a {email}: {str(e)}")
+        print(f"❌ Error enviando email: {e}")
+        return False
+    
+    # Versión texto plano (fallback)
+    text_content = f"""
+    Estimado/a {nombres},
+    
+    Ha solicitado un código de verificación para acceder al sistema de la Empresa Eléctrica Azogues.
+    
+    Su código de verificación es: {codigo}
+    
+    ⏰ IMPORTANTE: Este código es válido por 15 minutos.
+    
+    Si usted no solicitó este código, por favor ignore este mensaje.
+    
+    Atentamente,
+    Empresa Eléctrica Azogues
+    
+    ---
+    Este es un correo automático, por favor no responder.
+    © 2025 Empresa Eléctrica Azogues - Todos los derechos reservados
+    """
+    
+    # Versión HTML (mejorada)
+    html_content = f"""
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Código de Verificación - EEA</title>
+        <style>
+            body {{ 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                line-height: 1.6; 
+                color: #333; 
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }}
+            .email-wrapper {{
+                width: 100%;
+                background-color: #f4f4f4;
+                padding: 20px 0;
+            }}
+            .container {{ 
+                max-width: 600px; 
+                margin: 0 auto; 
+                background-color: #ffffff;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }}
+            .header {{ 
+                background: linear-gradient(135deg, #003D82 0%, #40A9E3 100%); 
+                color: white; 
+                padding: 30px 20px; 
+                text-align: center; 
+            }}
+            .header h1 {{
+                margin: 0;
+                font-size: 26px;
+                font-weight: bold;
+            }}
+            .header p {{
+                margin: 8px 0 0 0;
+                font-size: 14px;
+                opacity: 0.9;
+            }}
+            .content {{ 
+                background: #ffffff; 
+                padding: 40px 30px;
+            }}
+            .greeting {{
+                font-size: 16px;
+                margin-bottom: 20px;
+            }}
+            .codigo {{ 
+                background: #f8f9fa; 
+                border: 2px dashed #003D82; 
+                padding: 25px; 
+                text-align: center; 
+                margin: 30px 0; 
+                border-radius: 10px;
+            }}
+            .codigo-label {{
+                margin: 0 0 12px 0; 
+                color: #666; 
+                font-size: 14px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }}
+            .codigo-numero {{ 
+                font-size: 36px; 
+                font-weight: bold; 
+                color: #003D82; 
+                letter-spacing: 8px;
+                font-family: 'Courier New', monospace;
+            }}
+            .warning {{ 
+                background: #FFF3E0; 
+                border-left: 4px solid #FF9800; 
+                padding: 15px 20px; 
+                margin: 25px 0;
+                border-radius: 4px;
+            }}
+            .warning strong {{
+                color: #E65100;
+            }}
+            .footer {{ 
+                background: #f8f9fa; 
+                padding: 20px; 
+                text-align: center; 
+                font-size: 12px; 
+                color: #666;
+                border-top: 1px solid #e0e0e0;
+            }}
+            .footer p {{
+                margin: 5px 0;
+            }}
+            .signature {{
+                margin-top: 30px;
+                padding-top: 20px;
+                border-top: 1px solid #e0e0e0;
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="email-wrapper">
+            <div class="container">
+                <div class="header">
+                    <h1>⚡ Empresa Eléctrica Azogues</h1>
+                    <p>Sistema de Verificación de Usuarios</p>
+                </div>
+                <div class="content">
+                    <p class="greeting">Estimado/a <strong>{nombres}</strong>,</p>
+                    <p>Ha solicitado un código de verificación para acceder al sistema de la Empresa Eléctrica Azogues.</p>
+                    
+                    <div class="codigo">
+                        <p class="codigo-label">Su código de verificación es:</p>
+                        <div class="codigo-numero">{codigo}</div>
+                    </div>
+                    
+                    <div class="warning">
+                        <strong>⏰ Importante:</strong> Este código es válido por <strong>15 minutos</strong>. 
+                        Por seguridad, no comparta este código con nadie.
+                    </div>
+                    
+                    <p>Si usted no solicitó este código, por favor ignore este mensaje o contacte con el departamento de sistemas.</p>
+                    
+                    <div class="signature">
+                        <p>Atentamente,<br>
+                        <strong>Empresa Eléctrica Azogues</strong><br>
+                        Departamento de Sistemas</p>
+                    </div>
+                </div>
+                <div class="footer">
+                    <p><strong>Este es un correo automático, por favor no responder.</strong></p>
+                    <p>© 2025 Empresa Eléctrica Azogues - Todos los derechos reservados</p>
+                    <p style="margin-top: 10px; color: #999;">
+                        Si tiene problemas, contacte a: sistemas@eea.gob.ec
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    try:
+        # Crear mensaje con alternativas (texto plano + HTML)
+        email_msg = EmailMultiAlternatives(
+            subject=subject,
+            body=text_content,
+            from_email=from_email,
+            to=[email]
+        )
+        email_msg.attach_alternative(html_content, "text/html")
+        
+        # Enviar
+        email_msg.send(fail_silently=False)
+        
+        logger.info(f"Email de verificación enviado exitosamente a {email}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"Error enviando email a {email}: {str(e)}")
+        print(f"❌ Error enviando email: {e}")
         return False
 
 
@@ -203,10 +659,10 @@ def confirmacion_correo(request):
             
             # Enviar email
             if enviar_email_verificacion(usuario.email, codigo, usuario.nombres):
-                messages.success(request, f'Código enviado a {usuario.email}')
+                messages.success(request, f'✉️ Correo enviado satisfactoriamente a: {usuario.email}')
                 request.session['codigo_enviado'] = True
             else:
-                messages.error(request, 'Error al enviar el código. Intente nuevamente.')
+                messages.warning(request, f'⚠️ No fue posible enviar el correo a {usuario.email}. Por favor verifique su conexión o intente más tarde.')
         
         # Verificar código
         elif accion == 'verificar':
@@ -371,10 +827,10 @@ def recuperacion_credenciales(request):
                 )
                 
                 request.session['recuperacion_usuario_id'] = usuario.id_usuario
-                messages.success(request, f'Se ha enviado un código de verificación a {email}')
+                messages.success(request, f'✉️ Se ha enviado un código de verificación a {email}')
                 return redirect('verificar_codigo_recuperacion')
             else:
-                messages.error(request, 'Error al enviar el código. Intente nuevamente.')
+                messages.warning(request, f'⚠️ No fue posible enviar el correo a {email}. Por favor verifique su conexión o intente más tarde.')
         
         except UsuarioRegistrado.DoesNotExist:
             messages.error(request, 'Email no encontrado en nuestros registros')

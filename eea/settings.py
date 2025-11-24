@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Cargar variables de entorno desde .env
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 #BASE_DIR = "https://www.eea.gob.ec"
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -212,11 +216,45 @@ CKEDITOR_CONFIGS = {
 }
 
 
-# Configuración de Email SMTP
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'webmaster@eea.com.ec'
-EMAIL_HOST_PASSWORD = 'TestEnvMail.77'
-DEFAULT_FROM_EMAIL = 'webmaster@eea.com.ec'
+# --- Email configuration loaded from .env (if present) ---
+def _env(key, default=None):
+    v = os.getenv(key, default)
+    if isinstance(v, str):
+        # strip surrounding quotes and whitespace
+        v = v.strip().strip('"\'')
+    return v
+
+EMAIL_BACKEND = _env('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
+EMAIL_HOST = _env('EMAIL_HOST', '')
+EMAIL_PORT = int(_env('EMAIL_PORT', 25) or 25)
+EMAIL_HOST_USER = _env('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = _env('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = str(_env('EMAIL_USE_TLS', 'False')).lower() in ('1', 'true', 'yes')
+EMAIL_USE_SSL = str(_env('EMAIL_USE_SSL', 'False')).lower() in ('1', 'true', 'yes')
+DEFAULT_FROM_EMAIL = _env('DEFAULT_FROM_EMAIL', 'webmaster@localhost')
+
+# If no host provided and running in DEBUG, use console backend for convenience
+if not EMAIL_HOST and DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Logging configuration for email debugging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'mail_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'email.log'),
+        },
+    },
+    'loggers': {
+        'django.core.mail': {
+            'handlers': ['console', 'mail_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
