@@ -7,47 +7,124 @@
     <title>Consulta de Planillas - EEA</title>
     <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .service-card {
+            background: white;
+            border: 2px solid #E3F2FD;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 61, 130, 0.15);
+            border-color: var(--celeste);
+        }
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E3F2FD;
+        }
+        .account-number {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--azul-institucional);
+        }
+        .debt-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .debt-badge.has-debt {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            color: #C62828;
+        }
+        .debt-badge.no-debt {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            color: #2E7D32;
+        }
+        .service-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+        .info-value {
+            font-size: 15px;
+            color: var(--azul-institucional);
+            font-weight: 600;
+        }
+        .view-documents-btn {
+            margin-top: 15px;
+            width: 100%;
+            background: linear-gradient(135deg, var(--celeste) 0%, #1976D2 100%);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .view-documents-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(64, 169, 227, 0.4);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-active {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        .status-inactive {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 4px;
+        }
+    </style>
 </head>
 <body class="auth-page">
-    <div class="auth-container fade-in" style="max-width: 900px;">
+    <div class="auth-container fade-in" style="max-width: 1000px;">
         <!-- Header -->
         <div class="auth-header">
             <div class="auth-logo">
                 <i class="fas fa-file-invoice-dollar"></i>
             </div>
-            <h1 class="auth-title">Consulta de Planillas</h1>
+            <h1 class="auth-title">Mis Planillas</h1>
             <p class="auth-subtitle">Bienvenido/a {{ usuario.nombres }} {{ usuario.apellidos }}</p>
         </div>
 
         <!-- Contenido -->
         <div class="auth-content">
-            <!-- Información del Usuario -->
-            <div class="info-card" style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border-color: var(--celeste);">
-                <div class="info-card-header">
-                    <i class="fas fa-user-circle"></i>
-                    <div class="info-card-title">Información del Usuario</div>
-                </div>
-                <div class="info-card-content">
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
-                        <div>
-                            <strong style="color: var(--azul-institucional);">Cédula:</strong><br>
-                            {{ usuario.cedula }}
-                        </div>
-                        <div>
-                            <strong style="color: var(--azul-institucional);">Email:</strong><br>
-                            {{ usuario.email }}
-                        </div>
-                        <div>
-                            <strong style="color: var(--azul-institucional);">Nombres:</strong><br>
-                            {{ usuario.nombres }}
-                        </div>
-                        <div>
-                            <strong style="color: var(--azul-institucional);">Apellidos:</strong><br>
-                            {{ usuario.apellidos }}
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Mensajes -->
             {% if messages %}
@@ -59,70 +136,159 @@
                 {% endfor %}
             {% endif %}
 
-            <!-- Opciones de Consulta -->
-            <h3 style="color: var(--azul-institucional); margin: 30px 0 20px; font-size: 18px; text-align: center;">
-                <i class="fas fa-tasks"></i> Servicios Disponibles
-            </h3>
+            {% if error_servicio %}
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ error_servicio }}
+                </div>
+            {% endif %}
 
-            <div class="action-grid">
-                <div class="action-card">
-                    <i class="fas fa-file-invoice"></i>
-                    <div class="action-card-title">Consultar Planillas</div>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-history"></i>
-                    <div class="action-card-title">Historial de Pagos</div>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-chart-line"></i>
-                    <div class="action-card-title">Consumo Mensual</div>
-                </div>
-                
-                <div class="action-card">
-                    <i class="fas fa-download"></i>
-                    <div class="action-card-title">Descargar Facturas</div>
-                </div>
-            </div>
-
-            <!-- Formulario de Consulta -->
-            <div class="info-card">
-                <div class="info-card-header">
-                    <i class="fas fa-search"></i>
-                    <div class="info-card-title">Consultar Planilla por Número de Cuenta</div>
-                </div>
-                <div class="info-card-content">
-                    <form method="POST" action="#">
-                        {% csrf_token %}
-                        <div class="form-group" style="margin-bottom: 15px;">
-                            <input 
-                                type="text" 
-                                name="numero_cuenta" 
-                                class="form-control" 
-                                placeholder="Ingrese número de cuenta"
-                                required
-                            >
+            {% if datos_servicio %}
+                <!-- Información del Cliente -->
+                <div class="info-card" style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border-color: var(--celeste);">
+                    <div class="info-card-header">
+                        <i class="fas fa-user-circle"></i>
+                        <div class="info-card-title">Información del Cliente</div>
+                    </div>
+                    <div class="info-card-content">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                            <div>
+                                <strong style="color: var(--azul-institucional);">Nombres:</strong><br>
+                                {{ datos_servicio.NOMBRES }} {{ datos_servicio.APELLIDOS }}
+                            </div>
+                            <div>
+                                <strong style="color: var(--azul-institucional);">Cédula/RUC:</strong><br>
+                                {{ datos_servicio.CEDRUC }}
+                            </div>
+                            <div>
+                                <strong style="color: var(--azul-institucional);">Email:</strong><br>
+                                {{ datos_servicio.EMAIL|default:"No registrado" }}
+                            </div>
+                            <div>
+                                <strong style="color: var(--azul-institucional);">Teléfono:</strong><br>
+                                {{ datos_servicio.TELEFONO|default:"No registrado" }}
+                            </div>
+                            <div>
+                                <strong style="color: var(--azul-institucional);">Celular:</strong><br>
+                                {{ datos_servicio.CELULAR|default:"No registrado" }}
+                            </div>
+                            <div>
+                                <strong style="color: var(--azul-institucional);">Total Servicios:</strong><br>
+                                <span style="font-size: 18px; font-weight: bold; color: var(--celeste);">
+                                    {{ datos_servicio.SERVICIOS|length }}
+                                </span>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Buscar Planilla
-                        </button>
-                    </form>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Área de Resultados (ejemplo) -->
-            <div class="alert alert-info">
-                <i class="fas fa-info-circle"></i>
-                Esta es el área protegida donde se mostrarán los resultados de las consultas de planillas.
-                Aquí se integrará el módulo existente de consultas.
-            </div>
+                <!-- Listado de Servicios -->
+                <h3 style="color: var(--azul-institucional); margin: 30px 0 20px; font-size: 18px;">
+                    <i class="fas fa-bolt"></i> Mis Servicios Eléctricos
+                </h3>
+
+                {% if datos_servicio.SERVICIOS %}
+                    {% for servicio in datos_servicio.SERVICIOS %}
+                        <div class="service-card">
+                            <div class="service-header">
+                                <div>
+                                    <div style="font-size: 12px; color: #666; margin-bottom: 4px;">CUENTA DE CONTRATO</div>
+                                    <div class="account-number">
+                                        <i class="fas fa-hashtag"></i> {{ servicio.VKONT }}
+                                    </div>
+                                </div>
+                                <div>
+                                    {% if servicio.DEUDA and servicio.DEUDA != '0' and servicio.DEUDA != '0.00' %}
+                                        <div class="debt-badge has-debt">
+                                            <i class="fas fa-exclamation-triangle"></i> ${{ servicio.DEUDA }}
+                                        </div>
+                                    {% else %}
+                                        <div class="debt-badge no-debt">
+                                            <i class="fas fa-check-circle"></i> Sin deuda
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="service-info">
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        <i class="fas fa-map-marker-alt"></i> Dirección
+                                    </span>
+                                    <span class="info-value">{{ servicio.DIRECCION }}</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        <i class="fas fa-tachometer-alt"></i> Medidor
+                                    </span>
+                                    <span class="info-value">{{ servicio.MEDIDOR|default:"N/A" }}</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        <i class="fas fa-receipt"></i> Cuenta
+                                    </span>
+                                    <span class="info-value">{{ servicio.CUEN|default:"N/A" }}</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        <i class="fas fa-calendar-alt"></i> Meses Adeudados
+                                    </span>
+                                    <span class="info-value">
+                                        {% if servicio.MESES and servicio.MESES != '0' %}
+                                            <span style="color: #C62828;">{{ servicio.MESES }} meses</span>
+                                        {% else %}
+                                            <span style="color: #2E7D32;">Al día</span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+
+                                <div class="info-item">
+                                    <span class="info-label">
+                                        <i class="fas fa-info-circle"></i> Estado del Contrato
+                                    </span>
+                                    <span class="info-value">
+                                        {% if servicio.ESTADOCONTRATO == 'ACTIVO' or servicio.ESTADOCONTRATO == '01' %}
+                                            <span class="status-badge status-active">
+                                                <i class="fas fa-check"></i> Activo
+                                            </span>
+                                        {% else %}
+                                            <span class="status-badge status-inactive">
+                                                <i class="fas fa-times"></i> {{ servicio.ESTADOCONTRATO }}
+                                            </span>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button class="view-documents-btn" onclick="verDocumentos('{{ servicio.VKONT }}')">
+                                <i class="fas fa-file-pdf"></i> Ver Documentos y Facturas
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        No se encontraron servicios asociados a su cédula.
+                    </div>
+                {% endif %}
+
+            {% else %}
+                <!-- Mensaje cuando no hay datos del servicio -->
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    Cargando información de sus servicios eléctricos...
+                </div>
+            {% endif %}
+
 
             <!-- Acciones de Usuario -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
-                <a href="#" class="btn btn-secondary">
-                    <i class="fas fa-user-cog"></i> Mi Perfil
-                </a>
+                <button onclick="location.reload()" class="btn btn-secondary">
+                    <i class="fas fa-sync-alt"></i> Actualizar Información
+                </button>
                 <a href="{% url 'logout_usuario' %}" class="btn btn-link" style="background: #FFEBEE; color: #C62828;">
                     <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                 </a>
@@ -140,14 +306,127 @@
         </div>
     </div>
 
+    <!-- Modal para Documentos -->
+    <div class="modal fade" id="documentosModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--azul-institucional) 0%, var(--celeste) 100%); color: white;">
+                    <h5 class="modal-title">
+                        <i class="fas fa-file-pdf"></i> Documentos y Facturas
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="loading-spinner" id="loadingSpinner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                        <p style="margin-top: 15px; color: #666;">Cargando documentos...</p>
+                    </div>
+                    <div id="documentosContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Agregar interactividad a las cards
-        document.querySelectorAll('.action-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const title = this.querySelector('.action-card-title').textContent;
-                alert('Función: ' + title + '\n\nPróximamente disponible...');
+        function verDocumentos(ctacontrato) {
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById('documentosModal'));
+            modal.show();
+            
+            // Mostrar spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('documentosContent').innerHTML = '';
+            
+            // Obtener año actual y años anteriores
+            const currentYear = new Date().getFullYear();
+            const years = [currentYear, currentYear - 1, currentYear - 2];
+            
+            let documentosHTML = `
+                <div class="mb-3">
+                    <label class="form-label" style="font-weight: bold; color: var(--azul-institucional);">
+                        <i class="fas fa-calendar"></i> Seleccione el año:
+                    </label>
+                    <select class="form-select" id="yearSelector" onchange="cargarDocumentosPorAnio('${ctacontrato}', this.value)">
+                        <option value="">-- Seleccione un año --</option>
+                        ${years.map(year => `<option value="${year}">${year}</option>`).join('')}
+                    </select>
+                </div>
+                <div id="documentsList"></div>
+            `;
+            
+            document.getElementById('documentosContent').innerHTML = documentosHTML;
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
+        
+        function cargarDocumentosPorAnio(ctacontrato, anio) {
+            if (!anio) {
+                document.getElementById('documentsList').innerHTML = '';
+                return;
+            }
+            
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('documentsList').innerHTML = '';
+            
+            // Realizar petición AJAX para obtener documentos
+            $.ajax({
+                url: '/documentos/',
+                method: 'POST',
+                data: {
+                    'ctacontrato': ctacontrato,
+                    'anio': anio,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    
+                    if (response.DOCUMENTOS && response.DOCUMENTOS.length > 0) {
+                        let html = '<div class="table-responsive"><table class="table table-hover">';
+                        html += '<thead style="background: #E3F2FD;"><tr>';
+                        html += '<th><i class="fas fa-hashtag"></i> Documento</th>';
+                        html += '<th><i class="fas fa-calendar"></i> Fecha Doc.</th>';
+                        html += '<th><i class="fas fa-file-invoice"></i> Núm. Factura</th>';
+                        html += '<th><i class="fas fa-calendar-check"></i> Fecha Venc.</th>';
+                        html += '<th><i class="fas fa-tag"></i> Tipo</th>';
+                        html += '<th><i class="fas fa-dollar-sign"></i> Valor</th>';
+                        html += '</tr></thead><tbody>';
+                        
+                        response.DOCUMENTOS.forEach(doc => {
+                            html += '<tr>';
+                            html += `<td><strong>${doc.NUMDOCUMENTO}</strong></td>`;
+                            html += `<td>${doc.FECDOC}</td>`;
+                            html += `<td>${doc.NUMFAC}</td>`;
+                            html += `<td>${doc.FECVEN}</td>`;
+                            html += `<td>${doc.TIPDOC}</td>`;
+                            html += `<td style="font-weight: bold; color: var(--azul-institucional);">$${doc.VALORDOC}</td>`;
+                            html += '</tr>';
+                        });
+                        
+                        html += '</tbody></table></div>';
+                        document.getElementById('documentsList').innerHTML = html;
+                    } else {
+                        document.getElementById('documentsList').innerHTML = `
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                No se encontraron documentos para el año ${anio}
+                            </div>
+                        `;
+                    }
+                },
+                error: function() {
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    document.getElementById('documentsList').innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Error al cargar los documentos. Por favor intente nuevamente.
+                        </div>
+                    `;
+                }
             });
-        });
+        }
     </script>
 </body>
 </html>

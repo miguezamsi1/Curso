@@ -458,6 +458,8 @@ def logout_usuario(request):
 
 def consulta_planillas(request):
     """Vista protegida para consulta de planillas"""
+    from .servicios_consultas import obtener_servicio
+    
     usuario_id = request.session.get('usuario_logueado')
     
     if not usuario_id:
@@ -466,6 +468,43 @@ def consulta_planillas(request):
     
     try:
         usuario = UsuarioRegistrado.objects.get(id_usuario=usuario_id)
-        return render(request, 'auth/consulta_planillas.html', {'usuario': usuario})
+        
+        # Obtener la cédula del usuario de la sesión
+        usuario_cedula = request.session.get('usuario_cedula')
+        
+        # Inicializar variables para datos del servicio
+        datos_servicio = None
+        error_servicio = None
+        
+        if usuario_cedula:
+            try:
+                # Llamar al servicio web con la cédula del usuario
+                datos_servicio = obtener_servicio('CEDRUC', usuario_cedula, '', '')
+                
+                # Registrar evento de consulta exitosa
+                EventoSeguridad.objects.create(
+                    usuario=usuario,
+                    tipo_evento='CONSULTA_PLANILLA',
+                    descripcion=f'Consulta de planillas realizada exitosamente',
+                    ip_address=request.META.get('REMOTE_ADDR', '')
+                )
+            except Exception as e:
+                error_servicio = f'Error al consultar información: {str(e)}'
+                # Registrar evento de error
+                EventoSeguridad.objects.create(
+                    usuario=usuario,
+                    tipo_evento='ERROR_CONSULTA',
+                    descripcion=f'Error en consulta: {str(e)}',
+                    ip_address=request.META.get('REMOTE_ADDR', '')
+                )
+        
+        context = {
+            'usuario': usuario,
+            'datos_servicio': datos_servicio,
+            'error_servicio': error_servicio
+        }
+        
+        return render(request, 'auth/consulta_planillas.html', context)
+        
     except UsuarioRegistrado.DoesNotExist:
         return redirect('login_usuario')
