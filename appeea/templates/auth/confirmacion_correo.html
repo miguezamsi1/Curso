@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Correo - EEA</title>
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container fade-in">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-envelope-open-text"></i>
+            </div>
+            <h1 class="auth-title">Verificación de Correo</h1>
+            <p class="auth-subtitle">Confirme su dirección de email</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="auth-content">
+            <div class="security-icon">
+                <i class="fas fa-mail-bulk"></i>
+            </div>
+
+            <p class="auth-description">
+                Enviaremos un código de verificación de 6 dígitos a su correo electrónico:
+                <strong style="color: var(--azul-institucional);">{{ usuario.email }}</strong>
+            </p>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}info{% endif %}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if not codigo_enviado %}
+                <!-- Formulario para enviar código -->
+                <form method="POST" action="{% url 'confirmacion_correo' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="enviar">
+                    
+                    <div class="info-card">
+                        <div class="info-card-header">
+                            <i class="fas fa-info-circle"></i>
+                            <div class="info-card-title">Importante</div>
+                        </div>
+                        <div class="info-card-content">
+                            <ul style="margin-left: 20px;">
+                                <li>El código será válido por 15 minutos</li>
+                                <li>Revise su bandeja de entrada y spam</li>
+                                <li>El código es de un solo uso</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Enviar Código de Verificación
+                    </button>
+                </form>
+            {% else %}
+                <!-- Formulario para verificar código -->
+                <div class="alert alert-info">
+                    <i class="fas fa-check-circle"></i>
+                    Código enviado exitosamente. Por favor, revise su correo electrónico.
+                </div>
+
+                <form method="POST" action="{% url 'confirmacion_correo' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="verificar">
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-key"></i>
+                            Código de Verificación
+                        </label>
+                        <input 
+                            type="text" 
+                            name="codigo" 
+                            class="form-control codigo-input" 
+                            placeholder="000000"
+                            maxlength="6"
+                            pattern="[0-9]{6}"
+                            required
+                            autofocus
+                        >
+                        <small style="color: #999; font-size: 12px; display: block; margin-top: 5px; text-align: center;">
+                            Ingrese el código de 6 dígitos que recibió por email
+                        </small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i> Verificar Código
+                    </button>
+
+                    <div class="divider">
+                        <span>o</span>
+                    </div>
+
+                    <!-- Reenviar código -->
+                    <form method="POST" action="{% url 'confirmacion_correo' %}" style="margin-top: 15px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="accion" value="enviar">
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Reenviar Código
+                        </button>
+                    </form>
+                </form>
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                <i class="fas fa-lock"></i> Verificación segura mediante SMTP
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Solo permitir números en el código
+        const codigoInput = document.querySelector('input[name="codigo"]');
+        if (codigoInput) {
+            codigoInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+        }
+    </script>
+</body>
+</html>

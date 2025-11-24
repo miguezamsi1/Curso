@@ -156,6 +156,27 @@ class ProcesosContratacionNivel3Admin(admin.ModelAdmin):
     list_filter = ('id_procesos2',)
 
 
+class UsuarioRegistradoAdmin(admin.ModelAdmin):
+    list_display = ('cedula', 'nombres', 'apellidos', 'email', 'verificado', 'activo', 'fecha_registro', 'ultimo_acceso')
+    list_filter = ('verificado', 'activo', 'fecha_registro')
+    search_fields = ('cedula', 'nombres', 'apellidos', 'email')
+    readonly_fields = ('fecha_registro', 'ultimo_acceso')
+
+
+class CodigoVerificacionAdmin(admin.ModelAdmin):
+    list_display = ('codigo', 'usuario', 'tipo', 'usado', 'fecha_creacion', 'fecha_expiracion')
+    list_filter = ('tipo', 'usado', 'fecha_creacion')
+    search_fields = ('codigo', 'usuario__cedula', 'usuario__email')
+    readonly_fields = ('fecha_creacion',)
+
+
+class EventoSeguridadAdmin(admin.ModelAdmin):
+    list_display = ('tipo_evento', 'usuario', 'descripcion', 'ip_address', 'fecha_evento')
+    list_filter = ('tipo_evento', 'fecha_evento')
+    search_fields = ('usuario__cedula', 'usuario__email', 'descripcion', 'ip_address')
+    readonly_fields = ('fecha_evento',)
+
+
 def _register(model, admin_class):
     admin.site.register(model, admin_class)
 
@@ -181,3 +202,7 @@ _register(models.Servicios, ServiciosAdmin)
 _register(models.ProcesosContratacionNivel1, ProcesosContratacionNivel1Admin)
 _register(models.ProcesosContratacionNivel2, ProcesosContratacionNivel2Admin)
 _register(models.ProcesosContratacionNivel3, ProcesosContratacionNivel3Admin)
+_register(models.UsuarioRegistrado, UsuarioRegistradoAdmin)
+_register(models.CodigoVerificacion, CodigoVerificacionAdmin)
+_register(models.EventoSeguridad, EventoSeguridadAdmin)
+

@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Planillas - EEA</title>
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container fade-in" style="max-width: 900px;">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <h1 class="auth-title">Consulta de Planillas</h1>
+            <p class="auth-subtitle">Bienvenido/a {{ usuario.nombres }} {{ usuario.apellidos }}</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="auth-content">
+            <!-- Información del Usuario -->
+            <div class="info-card" style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%); border-color: var(--celeste);">
+                <div class="info-card-header">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="info-card-title">Información del Usuario</div>
+                </div>
+                <div class="info-card-content">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div>
+                            <strong style="color: var(--azul-institucional);">Cédula:</strong><br>
+                            {{ usuario.cedula }}
+                        </div>
+                        <div>
+                            <strong style="color: var(--azul-institucional);">Email:</strong><br>
+                            {{ usuario.email }}
+                        </div>
+                        <div>
+                            <strong style="color: var(--azul-institucional);">Nombres:</strong><br>
+                            {{ usuario.nombres }}
+                        </div>
+                        <div>
+                            <strong style="color: var(--azul-institucional);">Apellidos:</strong><br>
+                            {{ usuario.apellidos }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Opciones de Consulta -->
+            <h3 style="color: var(--azul-institucional); margin: 30px 0 20px; font-size: 18px; text-align: center;">
+                <i class="fas fa-tasks"></i> Servicios Disponibles
+            </h3>
+
+            <div class="action-grid">
+                <div class="action-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <div class="action-card-title">Consultar Planillas</div>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-history"></i>
+                    <div class="action-card-title">Historial de Pagos</div>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="action-card-title">Consumo Mensual</div>
+                </div>
+                
+                <div class="action-card">
+                    <i class="fas fa-download"></i>
+                    <div class="action-card-title">Descargar Facturas</div>
+                </div>
+            </div>
+
+            <!-- Formulario de Consulta -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-search"></i>
+                    <div class="info-card-title">Consultar Planilla por Número de Cuenta</div>
+                </div>
+                <div class="info-card-content">
+                    <form method="POST" action="#">
+                        {% csrf_token %}
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <input 
+                                type="text" 
+                                name="numero_cuenta" 
+                                class="form-control" 
+                                placeholder="Ingrese número de cuenta"
+                                required
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Buscar Planilla
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Área de Resultados (ejemplo) -->
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                Esta es el área protegida donde se mostrarán los resultados de las consultas de planillas.
+                Aquí se integrará el módulo existente de consultas.
+            </div>
+
+            <!-- Acciones de Usuario -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px;">
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-user-cog"></i> Mi Perfil
+                </a>
+                <a href="{% url 'logout_usuario' %}" class="btn btn-link" style="background: #FFEBEE; color: #C62828;">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                <i class="fas fa-user-check"></i> Sesión activa como {{ usuario.nombres }}
+            </p>
+            <p class="auth-footer-text" style="font-size: 11px; margin-top: 5px;">
+                Último acceso: {{ usuario.ultimo_acceso|date:"d/m/Y H:i" }}
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Agregar interactividad a las cards
+        document.querySelectorAll('.action-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.action-card-title').textContent;
+                alert('Función: ' + title + '\n\nPróximamente disponible...');
+            });
+        });
+    </script>
+</body>
+</html>

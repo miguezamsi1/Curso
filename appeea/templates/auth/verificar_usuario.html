@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Usuario - EEA</title>
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container fade-in">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h1 class="auth-title">Empresa Eléctrica Azogues</h1>
+            <p class="auth-subtitle">Sistema de Consulta de Planillas</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="auth-content">
+            <div class="banner-institucional">
+                <div class="banner-content">
+                    <div class="banner-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <p class="banner-text">Módulo de Verificación de Usuario</p>
+                </div>
+            </div>
+
+            <p class="auth-description">
+                Por favor, ingrese su número de cédula para verificar si está registrado en nuestro sistema.
+            </p>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Formulario -->
+            <form method="POST" action="{% url 'verificar_usuario' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-id-card"></i>
+                        Cédula de Identidad
+                    </label>
+                    <input 
+                        type="text" 
+                        name="cedula" 
+                        class="form-control" 
+                        placeholder="Ej: 0102030405"
+                        maxlength="10"
+                        pattern="[0-9]{10}"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Verificar Registro
+                </button>
+            </form>
+
+            <!-- Información Legal LOPDP -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="info-card-title">Protección de Datos Personales</div>
+                </div>
+                <div class="info-card-content">
+                    Sus datos personales serán tratados conforme a la Ley Orgánica de Protección de Datos Personales (LOPDP).
+                    La información recopilada será utilizada exclusivamente para gestión de servicios eléctricos.
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                ¿Necesita ayuda?
+            </p>
+            <a href="#" class="auth-footer-link">
+                <i class="fas fa-phone"></i> Contactar con soporte
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Validación de cédula ecuatoriana
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const cedula = document.querySelector('input[name="cedula"]').value;
+            
+            if (cedula.length !== 10) {
+                e.preventDefault();
+                alert('La cédula debe tener 10 dígitos');
+                return false;
+            }
+            
+            if (!/^\d+$/.test(cedula)) {
+                e.preventDefault();
+                alert('La cédula debe contener solo números');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso CHECKING - EEA</title>
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container fade-in">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h1 class="auth-title">Proceso de Verificación</h1>
+            <p class="auth-subtitle">CHECKING - Aceptación de Términos</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="auth-content">
+            <div class="security-icon">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+
+            <h2 style="text-align: center; color: var(--azul-institucional); margin-bottom: 20px; font-size: 20px;">
+                Usuario No Registrado
+            </h2>
+
+            <p class="auth-description">
+                Su cédula no se encuentra registrada en nuestro sistema. Para continuar con el registro, 
+                debe aceptar nuestros términos y condiciones de uso.
+            </p>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'warning' %}warning{% else %}info{% endif %}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Card LOPDP -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-file-contract"></i>
+                    <div class="info-card-title">Ley Orgánica de Protección de Datos Personales</div>
+                </div>
+                <div class="info-card-content">
+                    <p style="margin-bottom: 12px;">
+                        <strong>Información que recopilaremos:</strong>
+                    </p>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>Cédula de identidad</li>
+                        <li>Nombres y apellidos</li>
+                        <li>Correo electrónico</li>
+                        <li>Código dactilar (validación de identidad)</li>
+                    </ul>
+                    <p style="margin-bottom: 12px;">
+                        <strong>Uso de la información:</strong>
+                    </p>
+                    <ul style="margin-left: 20px;">
+                        <li>Gestión de cuenta de usuario</li>
+                        <li>Consulta de planillas y servicios</li>
+                        <li>Comunicaciones institucionales</li>
+                        <li>Seguridad y auditoría del sistema</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-size: 12px; color: #999;">
+                        Sus datos están protegidos bajo estrictas medidas de seguridad conforme a la normativa ecuatoriana vigente.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Formulario -->
+            <form method="POST" action="{% url 'proceso_checking' %}">
+                {% csrf_token %}
+                
+                <div class="custom-checkbox">
+                    <input type="checkbox" id="aceptacion_lopdp" name="aceptacion_lopdp" required>
+                    <label for="aceptacion_lopdp">
+                        He leído y acepto los <strong>Términos y Condiciones</strong> así como la 
+                        <strong>Política de Protección de Datos Personales</strong> de la Empresa Eléctrica Azogues.
+                        Autorizo el tratamiento de mis datos para los fines descritos.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-arrow-right"></i> Continuar con el Registro
+                </button>
+
+                <div class="divider">
+                    <span>o</span>
+                </div>
+
+                <a href="{% url 'verificar_usuario' %}" class="btn btn-link" style="width: 100%; display: block;">
+                    <i class="fas fa-arrow-left"></i> Volver a Verificación
+                </a>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                <i class="fas fa-lock"></i> Conexión segura y datos protegidos
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Validación de checkbox
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const checkbox = document.getElementById('aceptacion_lopdp');
+            if (!checkbox.checked) {
+                e.preventDefault();
+                alert('Debe aceptar los términos y condiciones para continuar');
+            }
+        });
+    </script>
+</body>
+</html>

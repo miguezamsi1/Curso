@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña - EEA</title>
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container fade-in">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-key"></i>
+            </div>
+            <h1 class="auth-title">Recuperar Contraseña</h1>
+            <p class="auth-subtitle">Restablecimiento de credenciales</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="auth-content">
+            <div class="security-icon">
+                <i class="fas fa-unlock-alt"></i>
+            </div>
+
+            <p class="auth-description">
+                Ingrese su correo electrónico registrado. Le enviaremos un código de verificación 
+                para restablecer su contraseña.
+            </p>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}info{% endif %}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Formulario -->
+            <form method="POST" action="{% url 'recuperacion_credenciales' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Correo Electrónico
+                    </label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        class="form-control" 
+                        placeholder="ejemplo@correo.com"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <div class="info-card-title">¿Qué sucederá?</div>
+                    </div>
+                    <div class="info-card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>Se enviará un código de 6 dígitos a su email</li>
+                            <li>El código será válido por 15 minutos</li>
+                            <li>Podrá crear una nueva contraseña</li>
+                            <li>El evento quedará registrado por seguridad</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Enviar Código de Recuperación
+                </button>
+
+                <div class="divider">
+                    <span>o</span>
+                </div>
+
+                <a href="{% url 'login_usuario' %}" class="btn btn-link" style="width: 100%; display: block;">
+                    <i class="fas fa-arrow-left"></i> Volver al Login
+                </a>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                <i class="fas fa-shield-alt"></i> Proceso seguro y registrado
+            </p>
+        </div>
+    </div>
+</body>
+</html>

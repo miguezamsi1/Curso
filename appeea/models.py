@@ -392,3 +392,71 @@ class Reclamos(models.Model):
 
     def __str__(self):
         return u'%s' % self.nombre
+
+
+class UsuarioRegistrado(models.Model):
+    id_usuario = models.AutoField(primary_key=True)
+    cedula = models.CharField(max_length=10, unique=True, verbose_name='Cédula de Identidad')
+    nombres = models.CharField(max_length=100, verbose_name='Nombres')
+    apellidos = models.CharField(max_length=100, verbose_name='Apellidos')
+    email = models.EmailField(max_length=150, unique=True, verbose_name='Correo Electrónico')
+    password = models.CharField(max_length=255, verbose_name='Contraseña')
+    codigo_dactilar = models.CharField(max_length=50, blank=True, null=True, verbose_name='Código Dactilar')
+    verificado = models.BooleanField(default=False, verbose_name='Usuario Verificado')
+    activo = models.BooleanField(default=True, verbose_name='Usuario Activo')
+    fecha_registro = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Registro')
+    ultimo_acceso = models.DateTimeField(blank=True, null=True, verbose_name='Último Acceso')
+
+    class Meta:
+        db_table = 'usuario_registrado'
+        verbose_name = 'Usuario Registrado'
+        verbose_name_plural = 'Usuarios Registrados'
+
+    def __str__(self):
+        return f'{self.cedula} - {self.nombres} {self.apellidos}'
+
+
+class CodigoVerificacion(models.Model):
+    id_codigo = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(UsuarioRegistrado, on_delete=models.CASCADE, db_column='id_usuario')
+    codigo = models.CharField(max_length=6, verbose_name='Código de Verificación')
+    tipo = models.CharField(max_length=20, choices=[
+        ('email', 'Verificación Email'),
+        ('recuperacion', 'Recuperación Contraseña')
+    ], verbose_name='Tipo de Código')
+    usado = models.BooleanField(default=False, verbose_name='Código Usado')
+    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Creación')
+    fecha_expiracion = models.DateTimeField(verbose_name='Fecha de Expiración')
+
+    class Meta:
+        db_table = 'codigo_verificacion'
+        verbose_name = 'Código de Verificación'
+        verbose_name_plural = 'Códigos de Verificación'
+
+    def __str__(self):
+        return f'{self.codigo} - {self.usuario.cedula}'
+
+
+class EventoSeguridad(models.Model):
+    id_evento = models.AutoField(primary_key=True)
+    usuario = models.ForeignKey(UsuarioRegistrado, on_delete=models.CASCADE, db_column='id_usuario', null=True, blank=True)
+    tipo_evento = models.CharField(max_length=50, choices=[
+        ('login_exitoso', 'Login Exitoso'),
+        ('login_fallido', 'Login Fallido'),
+        ('registro', 'Registro Nuevo'),
+        ('verificacion_email', 'Verificación Email'),
+        ('recuperacion_password', 'Recuperación Contraseña'),
+        ('cambio_password', 'Cambio Contraseña')
+    ], verbose_name='Tipo de Evento')
+    descripcion = models.TextField(max_length=500, verbose_name='Descripción')
+    ip_address = models.GenericIPAddressField(null=True, blank=True, verbose_name='Dirección IP')
+    fecha_evento = models.DateTimeField(auto_now_add=True, verbose_name='Fecha del Evento')
+
+    class Meta:
+        db_table = 'evento_seguridad'
+        verbose_name = 'Evento de Seguridad'
+        verbose_name_plural = 'Eventos de Seguridad'
+        ordering = ['-fecha_evento']
+
+    def __str__(self):
+        return f'{self.tipo_evento} - {self.fecha_evento}'

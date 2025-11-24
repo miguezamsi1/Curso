@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Identidad - EEA</title>
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container fade-in">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-fingerprint"></i>
+            </div>
+            <h1 class="auth-title">Validación de Identidad</h1>
+            <p class="auth-subtitle">Código Dactilar - Registro Civil</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="auth-content">
+            <div class="security-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+
+            <h2 style="text-align: center; color: var(--azul-institucional); margin-bottom: 20px; font-size: 18px;">
+                Verificación de Identidad Pública
+            </h2>
+
+            <p class="auth-description">
+                Para completar su registro de manera segura, ingrese su <strong>código dactilar</strong> 
+                que aparece en su cédula de identidad.
+            </p>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}info{% endif %}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-info-circle"></i>
+                    <div class="info-card-title">¿Dónde encontrar el código dactilar?</div>
+                </div>
+                <div class="info-card-content">
+                    El código dactilar se encuentra en la parte posterior de su cédula de identidad, 
+                    es una secuencia alfanumérica de aproximadamente 8-10 caracteres.
+                    <br><br>
+                    <strong>Ejemplo:</strong> AB123456CD
+                </div>
+            </div>
+
+            <!-- Formulario -->
+            <form method="POST" action="{% url 'validacion_identidad' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-fingerprint"></i>
+                        Código Dactilar
+                    </label>
+                    <input 
+                        type="text" 
+                        name="codigo_dactilar" 
+                        class="form-control" 
+                        placeholder="Ingrese su código dactilar"
+                        maxlength="15"
+                        required
+                        autofocus
+                        style="text-transform: uppercase; text-align: center; font-weight: 600; letter-spacing: 2px;"
+                    >
+                </div>
+
+                <div class="info-card" style="background: #FFF3E0; border-color: #FFB74D;">
+                    <div class="info-card-header">
+                        <i class="fas fa-exclamation-triangle" style="color: #F57C00;"></i>
+                        <div class="info-card-title" style="color: #F57C00;">Nota de Seguridad</div>
+                    </div>
+                    <div class="info-card-content">
+                        Esta información es confidencial y será utilizada únicamente para verificar su identidad.
+                        Sus datos están protegidos bajo estrictas medidas de seguridad.
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check-double"></i> Completar Registro
+                </button>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                <i class="fas fa-lock"></i> Proceso seguro y confidencial
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Auto mayúsculas
+        document.querySelector('input[name="codigo_dactilar"]').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+    </script>
+</body>
+</html>

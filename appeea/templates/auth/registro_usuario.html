@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario - EEA</title>
+    <link rel="stylesheet" href="{% static 'css/auth-style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container fade-in">
+        <!-- Header -->
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h1 class="auth-title">Registro de Nuevo Usuario</h1>
+            <p class="auth-subtitle">Complete sus datos personales</p>
+        </div>
+
+        <!-- Contenido -->
+        <div class="auth-content">
+            <p class="auth-description">
+                Por favor, complete el formulario con sus datos personales. Todos los campos son obligatorios.
+            </p>
+
+            <!-- Mensajes -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% elif message.tags == 'success' %}success{% else %}info{% endif %}">
+                        <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Formulario -->
+            <form method="POST" action="{% url 'registro_usuario' %}" id="registroForm">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-id-card"></i>
+                        Cédula de Identidad
+                    </label>
+                    <input 
+                        type="text" 
+                        name="cedula" 
+                        class="form-control" 
+                        value="{{ cedula }}"
+                        readonly
+                        style="background: #e9ecef; cursor: not-allowed;"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        Nombres
+                    </label>
+                    <input 
+                        type="text" 
+                        name="nombres" 
+                        class="form-control" 
+                        placeholder="Ingrese sus nombres"
+                        required
+                        autofocus
+                        style="text-transform: uppercase;"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-user"></i>
+                        Apellidos
+                    </label>
+                    <input 
+                        type="text" 
+                        name="apellidos" 
+                        class="form-control" 
+                        placeholder="Ingrese sus apellidos"
+                        required
+                        style="text-transform: uppercase;"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Correo Electrónico
+                    </label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        class="form-control" 
+                        placeholder="ejemplo@correo.com"
+                        required
+                    >
+                    <small style="color: #999; font-size: 12px; display: block; margin-top: 5px;">
+                        Se enviará un código de verificación a este correo
+                    </small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Contraseña
+                    </label>
+                    <div class="input-with-icon">
+                        <input 
+                            type="password" 
+                            name="password" 
+                            id="password"
+                            class="form-control" 
+                            placeholder="Mínimo 6 caracteres"
+                            minlength="6"
+                            required
+                        >
+                        <i class="input-icon fas fa-eye" id="togglePassword" onclick="togglePasswordVisibility('password')"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-lock"></i>
+                        Confirmar Contraseña
+                    </label>
+                    <div class="input-with-icon">
+                        <input 
+                            type="password" 
+                            name="confirmar_password" 
+                            id="confirmar_password"
+                            class="form-control" 
+                            placeholder="Repita su contraseña"
+                            minlength="6"
+                            required
+                        >
+                        <i class="input-icon fas fa-eye" id="toggleConfirmPassword" onclick="togglePasswordVisibility('confirmar_password')"></i>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Crear Cuenta
+                </button>
+
+                <div class="divider">
+                    <span>o</span>
+                </div>
+
+                <a href="{% url 'verificar_usuario' %}" class="btn btn-link" style="width: 100%; display: block;">
+                    <i class="fas fa-arrow-left"></i> Cancelar Registro
+                </a>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="auth-footer">
+            <p class="auth-footer-text">
+                <i class="fas fa-shield-alt"></i> Sus datos están protegidos
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar/ocultar contraseña
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling;
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Validación de formulario
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmar_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Las contraseñas no coinciden');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                e.preventDefault();
+                alert('La contraseña debe tener al menos 6 caracteres');
+                return false;
+            }
+        });
+
+        // Auto mayúsculas para nombres y apellidos
+        document.querySelectorAll('input[name="nombres"], input[name="apellidos"]').forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+    </script>
+</body>
+</html>
