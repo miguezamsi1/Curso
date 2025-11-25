@@ -40,7 +40,10 @@ urlpatterns = [
                   path('prueba', prueba, name="prueba"),
 
                   path('obtener_factura/<str:num_doc>/', views.obtener_factura, name='obtener_factura'),
-                  path('consulta-planillas/', views.info_cuenta, name='info_cuenta'),
+                  
+                  # Ruta antigua redirigida a página de acceso restringido
+                  path('consulta-planillas/', views.info_cuenta, name='info_cuenta_deprecated'),
+                  
                   path('documentos/', views.documentos, name='documentos'),
                   
                   # Sistema de Autenticación y Registro

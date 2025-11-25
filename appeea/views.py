@@ -392,32 +392,12 @@ def obtener_factura(request, num_doc):
         return render(request, 'consultas.html')
 
 def info_cuenta(request):
-    # Aquí se consume el servicio SOAP para obtener los detalles de la cuenta
-    # utilizando el número de cédula o el número de cuenta
-    error = None
-    details = None
-
-    if request.method == 'POST':
-        try:
-            tipo = request.POST.get('tipo')
-            valor = request.POST.get('valor')
-            page_size = request.POST.get('page_size')
-            skip = request.POST.get('skip')
-            details = obtener_servicio(tipo, valor, page_size, skip)
-
-            if not details:
-                error = "No se encontraron resultados para la consulta realizada."
-
-            if request.headers.get('Accept') == 'application/json':
-                return JsonResponse({'details': details, 'error': error})
-            else:
-                return render(request, "consultas.html", {'details': details, 'error': error})
-
-        except Exception as e:
-            #logger.error(f"Error en la vista info_cuenta: {e}")
-            return JsonResponse({'error': str(e)}, status=500)
-    else:
-        return render(request, 'formulario_consultas.html')
+    """
+    NOTA: Esta ruta ha sido deshabilitada por seguridad.
+    Ahora los usuarios deben acceder vía /auth/consultas/ con autenticación.
+    Redirige a una página informativa.
+    """
+    return render(request, 'acceso_restringido.html')
 
 def documentos(request):
     if request.method == 'POST':
