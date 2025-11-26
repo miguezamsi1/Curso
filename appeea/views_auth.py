@@ -642,6 +642,7 @@ def confirmacion_correo(request):
     
     if request.method == 'POST':
         accion = request.POST.get('accion')
+        logger.info(f"POST recibido en confirmacion_correo - accion: {accion}, usuario: {usuario.email}")
         
         # Enviar código
         if accion == 'enviar':
@@ -667,9 +668,11 @@ def confirmacion_correo(request):
         # Verificar código
         elif accion == 'verificar':
             codigo_ingresado = request.POST.get('codigo', '').strip()
+            logger.info(f"Intentando verificar código: {codigo_ingresado} para usuario: {usuario.email}")
             
             if not codigo_ingresado:
                 messages.error(request, 'Por favor ingrese el código')
+                logger.warning(f"Código vacío para usuario: {usuario.email}")
             else:
                 # Buscar código válido
                 try:
@@ -684,6 +687,7 @@ def confirmacion_correo(request):
                     # Marcar código como usado
                     codigo_obj.usado = True
                     codigo_obj.save()
+                    logger.info(f"Código verificado correctamente para usuario: {usuario.email}")
                     
                     # Registrar evento
                     EventoSeguridad.objects.create(
@@ -697,7 +701,10 @@ def confirmacion_correo(request):
                     return redirect('validacion_identidad')
                     
                 except CodigoVerificacion.DoesNotExist:
+                    logger.warning(f"Código incorrecto o expirado: {codigo_ingresado} para usuario: {usuario.email}")
                     messages.error(request, 'Código incorrecto o expirado')
+        else:
+            logger.warning(f"Acción no reconocida en confirmacion_correo: {accion}")
     
     return render(request, 'auth/confirmacion_correo.html', {
         'usuario': usuario,

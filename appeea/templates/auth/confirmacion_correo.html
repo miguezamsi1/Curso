@@ -71,7 +71,7 @@
                     Código enviado exitosamente. Por favor, revise su correo electrónico.
                 </div>
 
-                <form method="POST" action="{% url 'confirmacion_correo' %}">
+                <form method="POST" action="{% url 'confirmacion_correo' %}" id="formVerificar">
                     {% csrf_token %}
                     <input type="hidden" name="accion" value="verificar">
                     
@@ -83,34 +83,36 @@
                         <input 
                             type="text" 
                             name="codigo" 
+                            id="codigo_verificacion"
                             class="form-control codigo-input" 
                             placeholder="000000"
                             maxlength="6"
                             pattern="[0-9]{6}"
                             required
                             autofocus
+                            autocomplete="off"
                         >
                         <small style="color: #999; font-size: 12px; display: block; margin-top: 5px; text-align: center;">
                             Ingrese el código de 6 dígitos que recibió por email
                         </small>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" id="btnVerificar">
                         <i class="fas fa-check"></i> Verificar Código
                     </button>
+                </form>
 
-                    <div class="divider">
-                        <span>o</span>
-                    </div>
+                <div class="divider">
+                    <span>o</span>
+                </div>
 
-                    <!-- Reenviar código -->
-                    <form method="POST" action="{% url 'confirmacion_correo' %}" style="margin-top: 15px;">
-                        {% csrf_token %}
-                        <input type="hidden" name="accion" value="enviar">
-                        <button type="submit" class="btn btn-secondary">
-                            <i class="fas fa-redo"></i> Reenviar Código
-                        </button>
-                    </form>
+                <!-- Reenviar código -->
+                <form method="POST" action="{% url 'confirmacion_correo' %}" style="margin-top: 15px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="enviar">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i> Reenviar Código
+                    </button>
                 </form>
             {% endif %}
         </div>
